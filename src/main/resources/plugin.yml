@@ -1,0 +1,4 @@
+name: MultiModWorld
+main: de.davboecki.multimodworld.MultiModWorld
+version: 0.1a
+load: startup
