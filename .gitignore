@@ -1,3 +1,11 @@
 /bin
 .classpath
 .project
+/target
+/plugins
+/world
+/world_nether
+/world_the_end
+/Test
+.settings
+.git
