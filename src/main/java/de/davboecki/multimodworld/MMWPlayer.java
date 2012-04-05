@@ -26,9 +26,9 @@ public class MMWPlayer {
 	}
 
 	// Player Create
-	private static ArrayList<MMWPlayer> playerlist = new ArrayList<MMWPlayer>();
+	private static final ArrayList<MMWPlayer> playerlist = new ArrayList<MMWPlayer>();
 
-	MMWPlayer(Player player) {
+	private MMWPlayer(Player player) {
 		this.player = player;
 		playerlist.add(this);
 		crplayer = new ChestRoomPlayer(this);
