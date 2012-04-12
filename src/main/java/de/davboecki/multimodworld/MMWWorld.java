@@ -4,19 +4,25 @@ import java.util.ArrayList;
 
 import org.bukkit.World;
 
-import de.davboecki.multimodworld.settings.WorldSettings;
+import de.davboecki.multimodworld.chestroom.ChestRoomControler;
+import de.davboecki.multimodworld.settings.MMWWorldSettings;
 
 public class MMWWorld {
 	
-	World world;
-	WorldSettings settings;
+	private World world;
+	MMWWorldSettings settings;
+	
+	
+	public World getWorld() {
+		return world;
+	}
 	
 	//Create MMWWorld
 	private static final ArrayList<MMWPlayer> worldlist = new ArrayList<MMWPlayer>();
 
-	private MMWWorld(World world) {
+	protected MMWWorld(World world) {
 		this.world = world;
-		settings = new WorldSettings(world);
+		settings = new MMWWorldSettings(this);
 		if (settings.isNew()) {
 			settings.save();
 		} else {
@@ -30,6 +36,10 @@ public class MMWWorld {
 			mmwworld.world.getName().equals(world.getName());
 			return mmwworld;
 		}
-		return new MMWWorld(world);
+		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(world)){
+			return new MMWExchangeWorld(world);
+		} else {
+			return new MMWWorld(world);
+		}
 	}
 }

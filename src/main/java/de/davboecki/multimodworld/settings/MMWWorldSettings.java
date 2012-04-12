@@ -5,15 +5,16 @@ import java.util.HashMap;
 
 import org.bukkit.World;
 
+import de.davboecki.multimodworld.MMWWorld;
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.konstant.FileSystem;
 
-public class WorldSettings extends Settings {
+public class MMWWorldSettings extends Settings {
 	
-	World world;
+	MMWWorld world;
 	
-	public WorldSettings(World world) {
-		super(new File(MultiModWorld.getInstance().getDataFolder().getPath() + "/" + FileSystem.WorldSettings + "/" + world.getName() + ".yml"));
+	public MMWWorldSettings(MMWWorld world) {
+		super(new File(MultiModWorld.getInstance().getDataFolder().getPath() + "/" + FileSystem.WorldSettings + "/" + world.getWorld().getName() + ".yml"));
 		this.world = world;
 	}
 
