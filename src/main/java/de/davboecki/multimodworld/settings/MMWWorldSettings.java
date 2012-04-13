@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import de.davboecki.multimodworld.MMWWorld;
 import de.davboecki.multimodworld.MultiModWorld;
-import de.davboecki.multimodworld.konstant.FileSystem;
+import de.davboecki.multimodworld.constant.FileSystem;
 
 public class MMWWorldSettings extends Settings {
 	

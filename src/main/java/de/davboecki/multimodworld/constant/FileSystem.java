@@ -1,4 +1,4 @@
-package de.davboecki.multimodworld.konstant;
+package de.davboecki.multimodworld.constant;
 
 public class FileSystem {
 	public static final String PlayerSettings = "player";
