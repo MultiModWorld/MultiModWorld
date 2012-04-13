@@ -3,7 +3,6 @@ package de.davboecki.multimodworld.settings;
 import java.util.HashMap;
 
 import de.davboecki.multimodworld.MMWExchangeWorld;
-import de.davboecki.multimodworld.settings.Settings.ErrorType;
 
 public class MMWExchangeWorldSettings extends MMWWorldSettings{
 

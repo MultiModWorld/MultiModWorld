@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.bukkit.World;
 
-import de.davboecki.multimodworld.chestroom.ChestRoomControler;
 import de.davboecki.multimodworld.settings.MMWWorldSettings;
 
 public class MMWWorld {

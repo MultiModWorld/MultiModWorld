@@ -3,8 +3,6 @@ package de.davboecki.multimodworld.settings;
 import java.io.File;
 import java.util.HashMap;
 
-import org.bukkit.World;
-
 import de.davboecki.multimodworld.MMWWorld;
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.konstant.FileSystem;

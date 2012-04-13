@@ -31,32 +31,6 @@ public class ChestRoomGenerator extends ChunkGenerator {
 			}
 		}
 
-		final boolean schilder = false;
-		if (cx == 0 && cz == 0 && schilder) {
-			final boolean schacht = false;
-			if (schacht) {
-				for (int y = 3; y < 65; y++) {
-					addBlock(result, 3, y, 1, (byte) Material.AIR.getId());
-				}
-				addBlock(result, 3, 4, 1, (byte) Material.WALL_SIGN.getId());
-				for (int y = 5; y < 8; y++) {
-					addBlock(result, 3, y, 1, (byte) Material.WATER.getId());
-				}
-			}
-			for (int x = 0; x < 5; x++) {
-				for (int z = 0; z < 5; z++) {
-					for (int y = 1; y < 4; y++) {
-						addBlock(result, x, y, z, (byte) Material.AIR.getId());
-					}
-				}
-			}
-			/*
-			 * addBlock(result,0,1,0,(byte)Material.SIGN_POST.getId()); addBlock(result,1,1,0,(byte)Material.SIGN_POST.getId());
-			 * addBlock(result,2,1,0,(byte)Material.SIGN_POST.getId()); addBlock(result,3,1,0,(byte)Material.SIGN_POST.getId());
-			 * addBlock(result,4,1,0,(byte)Material.SIGN_POST.getId());
-			 */
-		}
-
 		if (cx == 0) {
 			// Lavakanal
 			for (int z = 0; z < 16; z++) {

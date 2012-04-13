@@ -4,18 +4,13 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.davboecki.multimodworld.chestroom.ChestRoomControler;
+import de.davboecki.multimodworld.mod.ModList;
 
 public class MultiModWorld extends JavaPlugin {
 
 	private final ChestRoomControler roomcontroler = new ChestRoomControler(this);
 	private static MultiModWorld instance;
-
-	public MultiModWorld() {
-		if (instance != null) {
-			getLogger().warning("Created MultiModWorld another time.");
-		}
-		instance = this;
-	}
+	private ModList ModList = new ModList();
 
 	public ChestRoomControler getRoomcontroler() {
 		return roomcontroler;
@@ -24,6 +19,10 @@ public class MultiModWorld extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		roomcontroler.onLoad();
+		if (instance != null) {
+			getLogger().warning("Created MultiModWorld another time.");
+		}
+		instance = this;
 	}
 
 	@Override
@@ -34,6 +33,12 @@ public class MultiModWorld extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		roomcontroler.onEnable();
+		new MultiModWorldApiPlugin();
+		try {
+			ModList.load();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -50,5 +55,9 @@ public class MultiModWorld extends JavaPlugin {
 		} else {
 			return null;
 		}
+	}
+
+	public ModList getModList() {
+		return ModList;
 	}
 }
