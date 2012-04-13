@@ -1,4 +1,4 @@
-package de.davboecki.multimodworld.chestroom;
+package de.davboecki.multimodworld.exchangeworld;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -6,11 +6,11 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import de.davboecki.multimodworld.MultiModWorld;
 
-public class ChestRoomSpawnListener implements Listener {
+public class ExchangeWorldSpawnListener implements Listener {
 
 	private final MultiModWorld plugin;
 
-	ChestRoomSpawnListener(MultiModWorld instance) {
+	ExchangeWorldSpawnListener(MultiModWorld instance) {
 		plugin = instance;
 	}
 

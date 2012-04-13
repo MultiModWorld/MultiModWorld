@@ -1,4 +1,4 @@
-package de.davboecki.multimodworld.chestroom;
+package de.davboecki.multimodworld.exchangeworld;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 
-public class ChestRoomGenerator extends ChunkGenerator {
+public class ExchangeWorldGenerator extends ChunkGenerator {
 
 	private void addBlock(byte[] result, int x, int y, int z, byte value) {
 		result[(x * 16 + z) * 128 + y] = value;

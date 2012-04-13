@@ -9,7 +9,7 @@ import net.minecraft.server.Packet230ModLoader;
 
 import org.bukkit.entity.Player;
 
-import de.davboecki.multimodworld.chestroom.ChestRoomPlayer;
+import de.davboecki.multimodworld.exchangeworld.ExchangeWorldPlayer;
 import de.davboecki.multimodworld.mod.ClientMod;
 import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.mod.ModInfoBase;
@@ -18,7 +18,7 @@ import de.davboecki.multimodworld.settings.MMWPlayerSettings;
 public class MMWPlayer {
 
 	private final Player player;
-	private final ChestRoomPlayer crplayer;
+	private final ExchangeWorldPlayer crplayer;
 	private final MMWPlayerSettings settings;
 	private ArrayList<ModInfoBase> KnownMods = new ArrayList<ModInfoBase>();
 	private ArrayList<ModInfoBase> KnownModsOtherVersion = new ArrayList<ModInfoBase>();
@@ -27,7 +27,7 @@ public class MMWPlayer {
 		return player;
 	}
 
-	public ChestRoomPlayer getChestRoomPlayer() {
+	public ExchangeWorldPlayer getChestRoomPlayer() {
 		return crplayer;
 	}
 
@@ -75,7 +75,7 @@ public class MMWPlayer {
 	private MMWPlayer(Player player) {
 		this.player = player;
 		playerlist.add(this);
-		crplayer = new ChestRoomPlayer(this);
+		crplayer = new ExchangeWorldPlayer(this);
 		settings = new MMWPlayerSettings(this);
 		if (settings.isNew()) {
 			settings.save();
@@ -87,7 +87,7 @@ public class MMWPlayer {
 	private MMWPlayer(EntityPlayer eplayer) {
 		this.player = eplayer.getBukkitEntity();
 		playerlist.add(this);
-		crplayer = new ChestRoomPlayer(this);
+		crplayer = new ExchangeWorldPlayer(this);
 		settings = new MMWPlayerSettings(this);
 		if (settings.isNew()) {
 			settings.save();

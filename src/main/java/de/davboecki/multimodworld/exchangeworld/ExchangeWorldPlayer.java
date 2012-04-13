@@ -1,15 +1,15 @@
-package de.davboecki.multimodworld.chestroom;
+package de.davboecki.multimodworld.exchangeworld;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.davboecki.multimodworld.MMWPlayer;
 
-public class ChestRoomPlayer {
+public class ExchangeWorldPlayer {
 
 	MMWPlayer mmwplayer;
 
-	public ChestRoomPlayer(MMWPlayer mmwplayer) {
+	public ExchangeWorldPlayer(MMWPlayer mmwplayer) {
 		this.mmwplayer = mmwplayer;
 	}
 

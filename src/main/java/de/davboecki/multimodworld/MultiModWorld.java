@@ -3,16 +3,16 @@ package de.davboecki.multimodworld;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.davboecki.multimodworld.chestroom.ChestRoomControler;
+import de.davboecki.multimodworld.exchangeworld.ExchnageWorldController;
 import de.davboecki.multimodworld.mod.ModList;
 
 public class MultiModWorld extends JavaPlugin {
 
-	private final ChestRoomControler roomcontroler = new ChestRoomControler(this);
+	private final ExchnageWorldController roomcontroler = new ExchnageWorldController(this);
 	private static MultiModWorld instance;
 	private ModList ModList = new ModList();
 
-	public ChestRoomControler getRoomcontroler() {
+	public ExchnageWorldController getRoomcontroler() {
 		return roomcontroler;
 	}
 

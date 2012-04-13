@@ -1,18 +1,18 @@
-package de.davboecki.multimodworld.chestroom;
+package de.davboecki.multimodworld.exchangeworld;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 
 import de.davboecki.multimodworld.MultiModWorld;
-import de.davboecki.multimodworld.chestroom.listener.PlayerMoveListener;
+import de.davboecki.multimodworld.exchangeworld.listener.PlayerMoveListener;
 
-public class ChestRoomControler {
+public class ExchnageWorldController {
 
 	private final MultiModWorld plugin;
-	public final ChestRoomGenerator generator = new ChestRoomGenerator();
+	public final ExchangeWorldGenerator generator = new ExchangeWorldGenerator();
 
-	public ChestRoomControler(MultiModWorld instance) {
+	public ExchnageWorldController(MultiModWorld instance) {
 		plugin = instance;
 	}
 
@@ -24,7 +24,7 @@ public class ChestRoomControler {
 
 	public void onEnable() {
 		final PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvents(new ChestRoomSpawnListener(plugin), plugin);
+		pm.registerEvents(new ExchangeWorldSpawnListener(plugin), plugin);
 		pm.registerEvents(new PlayerMoveListener(plugin), plugin);
 	}
 
