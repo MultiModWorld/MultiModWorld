@@ -2,49 +2,67 @@ package de.davboecki.multimodworld.mod;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.ModContainer;
+
 import de.davboecki.multimodworld.api.ModChecker;
 import de.davboecki.multimodworld.api.plugin.ModAddList;
+import forge.NetworkMod;
 
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.BaseModMp;
 import net.minecraft.server.Entity;
 import net.minecraft.server.Packet;
 
 public class ModList extends ArrayList<ModInfo> {
 	
 	public void load() throws Exception {
-		ArrayList<BaseMod> ModList = ModChecker.getModList();
-		for(BaseMod bMod:ModList) {
-			if(bMod instanceof BaseModMp) {
-				if(!contains((BaseModMp)bMod)) {
-					this.add(new ModInfo((BaseModMp) bMod));
-				}
+		ArrayList<ModContainer> ModList = ModChecker.getModList();
+		for(ModContainer bMod:ModList) {
+			if(!contains(bMod)) {
+				this.add(new ModInfo(bMod));
 			}
 		}
 		ArrayList<ModAddList> List = ModChecker.getAddedBlockList();
 		for(ModAddList Moddata:List) {
-			if(Moddata.getMod() instanceof BaseModMp) {
-				if(contains(Moddata.getMod())) {
-					ModInfo info = this.get((BaseModMp) Moddata.getMod());
-					if(Moddata.getIds() != null && Moddata.getIds().length > 0) {
-						info.setIds(Moddata.getIds());
-					}
-					if(Moddata.getEntitis() != null && Moddata.getEntitis().length > 0) {
-						info.setEntities(Moddata.getEntitis());
-					}
-					if(Moddata.getPackets() != null && Moddata.getPackets().length > 0) {
-						info.setPackets(Moddata.getPackets());
-					}
-				} else {
-					throw new Exception("Mod added Blocks/Entities/Packets but he was not loaded.");
+			if(contains(Moddata.getMod())) {
+				ModInfo info = this.get(Moddata.getMod());
+				if(Moddata.getIds() != null && Moddata.getIds().length > 0) {
+					info.addIds(Moddata.getIds());
 				}
+				if(Moddata.getEntitis() != null && Moddata.getEntitis().length > 0) {
+					info.addEntities(Moddata.getEntitis());
+				}
+				if(Moddata.getPackets() != null && Moddata.getPackets().length > 0) {
+					info.addPackets(Moddata.getPackets());
+				}
+			} else {
+				throw new Exception("Mod: "+Moddata.getMod().toString()+" added Blocks/Entities/Packets but he was not loaded.");
 			}
 		}
 	}
-	
-	public boolean contains(BaseModMp bMod) {
+
+	public boolean contains(ModContainer cMod) {
+		if(cMod.getMod() instanceof NetworkMod) {
+			return contains((NetworkMod)cMod.getMod());
+		}
+		if(cMod.getMod() instanceof Mod) {
+			return contains((Mod)cMod.getMod());
+		}
+		
+		return false;
+	}
+
+	public boolean contains(NetworkMod bMod) {
 		for(ModInfo Moddata:this) {
-			if(bMod.equals(Moddata.getBaseMod())) {
+			if(bMod.equals(Moddata.getModContainer().getMod())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean contains(Mod mMod) {
+		for(ModInfo Moddata:this) {
+			if(mMod.equals(Moddata.getModContainer().getMod())) {
 				return true;
 			}
 		}
@@ -53,7 +71,7 @@ public class ModList extends ArrayList<ModInfo> {
 
 	public boolean contains(String Name) {
 		for(ModInfo Moddata:this) {
-			if(Name.equals(Moddata.getName())) {
+			if(Name.equals(Moddata.getName()) || Name.equals(Moddata.getModContainer().getName())) {
 				return true;
 			}
 		}
@@ -96,10 +114,19 @@ public class ModList extends ArrayList<ModInfo> {
 		}
 		return false;
 	}
-	
-	public ModInfo get(BaseModMp bMod) {
+
+	public ModInfo get(ModContainer bMod) {
 		for(ModInfo Moddata:this) {
-			if(bMod.equals(Moddata.getBaseMod())) {
+			if(bMod.equals(Moddata.getModContainer())) {
+				return Moddata;
+			}
+		}
+		return null;
+	}
+
+	public ModInfo get(NetworkMod bMod) {
+		for(ModInfo Moddata:this) {
+			if(bMod.equals(Moddata.getModContainer().getMod())) {
 				return Moddata;
 			}
 		}
@@ -115,7 +142,7 @@ public class ModList extends ArrayList<ModInfo> {
 		return null;
 	}
 
-	public ModInfo get(int id) {
+	public ModInfo getById(int id) {
 		for(ModInfo Moddata:this) {
 			if(Moddata.addedIds()) {
 				for(int localid:Moddata.getIds()) {
@@ -155,12 +182,14 @@ public class ModList extends ArrayList<ModInfo> {
 		return (ModInfo[])super.toArray();
 	}
 	
+	/*
 	public ModInfo[] getByClassName(String[] modnames) {
 		for(ModInfo ModInfo:this) {
-			System.out.print(ModInfo.getBaseMod().toString());
+			System.out.print(ModInfo.getModContainer().toString());
 		}
 		return null;
 	}
+	*/
 	
 	/**
 	 * 

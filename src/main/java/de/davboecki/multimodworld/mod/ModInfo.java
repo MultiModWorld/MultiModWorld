@@ -1,27 +1,40 @@
 package de.davboecki.multimodworld.mod;
 
-import net.minecraft.server.BaseModMp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import cpw.mods.fml.common.ModContainer;
+import forge.NetworkMod;
+
 import net.minecraft.server.Entity;
 import net.minecraft.server.Packet;
 
 public class ModInfo extends ModInfoBase {
 
-	public ModInfo(BaseModMp bMod) {
+	public ModInfo(ModContainer bMod) {
 		super(bMod.getName());
 		this.bMod = bMod;
-		this.Version = bMod.getVersion();
-		this.ClientSide = bMod.hasClientSide();
+		if(bMod.getMod() instanceof NetworkMod) {
+			NetworkMod nMod = (NetworkMod)bMod.getMod();
+			this.Version = nMod.getVersion();
+			this.ClientSide = nMod.clientSideRequired();
+		} else {
+			this.ClientSide = true;
+		}
 	}
 
-	private BaseModMp bMod;
+	private ModContainer bMod;
 	protected String Name;
-	protected String Version;
-	protected boolean ClientSide;
-	protected Class<Packet>[] Packets;
-	protected Class<Entity>[] Entities;
-	protected int[] ids;
+	protected String Version = null;
+	protected boolean ClientSide = true;
+	@SuppressWarnings("unchecked")
+	protected Class<Packet>[] Packets = new Class[0];
+	@SuppressWarnings("unchecked")
+	protected Class<Entity>[] Entities = new Class[0];
+	protected int[] ids = new int[0];
 
-	public BaseModMp getBaseMod() {
+	public ModContainer getModContainer() {
 		return bMod;
 	}
 	
@@ -41,19 +54,18 @@ public class ModInfo extends ModInfoBase {
 		return ids;
 	}
 	
-	public void setPackets(Class<Packet>[] packets) {
-		if(this.Packets == null)
-			this.Packets = packets;
+	@SuppressWarnings("unchecked")
+	public void addPackets(Class<Packet>[] packets) {
+		this.Packets = merge(this.Packets,packets);
 	}
 	
-	public void setEntities(Class<Entity>[] entities) {
-		if(this.Entities == null)
-			this.Entities = entities;
+	@SuppressWarnings("unchecked")
+	public void addEntities(Class<Entity>[] entities) {
+		this.Entities = merge(this.Entities,entities);
 	}
 	
-	public void setIds(int[] ids) {
-		if(ids == null)
-			this.ids = ids;
+	public void addIds(int[] ids) {
+		this.ids = merge(this.ids,ids);
 	}
 	
 	public boolean addedPackets() {
@@ -69,7 +81,7 @@ public class ModInfo extends ModInfoBase {
 	}
 	
 	public boolean equals(String pName) {
-		return pName.equals(this.getBaseMod().toString());
+		return pName.equals(this.getModContainer().getMod().toString());
 	}
 
 	public boolean equalsWithOtherVersion(String pName) {
@@ -78,5 +90,39 @@ public class ModInfo extends ModInfoBase {
 	
 	public String toString() {
 		return this.getName()+" "+this.getVersion();
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static int[] merge(int[]... arrays) {
+		List list = new ArrayList();
+		
+		for( int[] array : arrays )
+		list.addAll( Arrays.asList( array ) );
+		
+		int[] content = new int[list.size()];
+		int count = 0;
+		for(Object Object:list) {
+			if(Object instanceof Integer) {
+				content[count++] = (Integer)Object;
+			}
+		}
+		return content;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static Class[] merge(Class[]... arrays) {
+		List list = new ArrayList();
+		
+		for( Class[] array : arrays )
+		list.addAll( Arrays.asList( array ) );
+		
+		Class[] content = new Class[list.size()];
+		int count = 0;
+		for(Object Object:list) {
+			if(Object instanceof Integer) {
+				content[count++] = (Class)Object;
+			}
+		}
+		return content;
 	}
 }

@@ -5,12 +5,12 @@ import java.util.List;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet;
-import net.minecraft.server.Packet230ModLoader;
 
 import org.bukkit.entity.Player;
 
 import de.davboecki.multimodworld.api.ModChecker;
 import de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin;
+import forge.packets.PacketModList;
 
 public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {
 	
@@ -48,10 +48,15 @@ public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {
 		return true;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean handleModPacketResponse(Packet230ModLoader packet, EntityPlayer player, List bannedMods) {
-		MMWPlayer.getMMWPlayer(player).handleModPacketResponse(packet, bannedMods);
-		return true;
+	public boolean handleModPacketResponse(EntityPlayer eplayer, PacketModList pkt) {
+		MMWPlayer.getMMWPlayer(eplayer).handleModPacketResponse(pkt);
+		return false;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public List replaceRecipies(List recipies) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

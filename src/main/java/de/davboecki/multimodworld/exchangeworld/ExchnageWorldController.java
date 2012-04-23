@@ -10,7 +10,7 @@ import de.davboecki.multimodworld.exchangeworld.listener.PlayerMoveListener;
 public class ExchnageWorldController {
 
 	private final MultiModWorld plugin;
-	public final ExchangeWorldGenerator generator = new ExchangeWorldGenerator();
+	public static final ExchangeWorldGenerator generator = new ExchangeWorldGenerator();
 
 	public ExchnageWorldController(MultiModWorld instance) {
 		plugin = instance;

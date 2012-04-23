@@ -23,9 +23,16 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>craftbukkit</artifactId>
+      <version>1.2.5-R1.1-MCPC-MMW-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>de.davboecki</groupId>
-      <artifactId>multimodworld-server</artifactId>
-      <version>1.2.3-R0.3-56</version>
+      <artifactId>worldedit</artifactId>
+      <version>5.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

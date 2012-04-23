@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Packet230ModLoader;
 
 import org.bukkit.entity.Player;
 
@@ -14,6 +13,7 @@ import de.davboecki.multimodworld.mod.ClientMod;
 import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.mod.ModInfoBase;
 import de.davboecki.multimodworld.settings.MMWPlayerSettings;
+import forge.packets.PacketModList;
 
 public class MMWPlayer {
 
@@ -36,21 +36,28 @@ public class MMWPlayer {
 	}
 
 	public ModInfoBase[] getKnownMods() {
-		//TODO
-		return null;
+		return KnownMods.toArray(new ModInfoBase[0]);
+	}
+
+	public ModInfoBase[] getKnownModsWithDifferentVersion() {
+		return KnownModsOtherVersion.toArray(new ModInfoBase[0]);
 	}
 
 	public ModInfo[] getKnownServerMods() {
-		//TODO
-		return null;
+		return KnownMods.toArray(new ModInfo[0]);
 	}
 	
-	public void handleModPacketResponse(Packet230ModLoader packet, List<String> bannedMods) {
-		if(packet.dataString.length > 0) {
-			List<String> Mods = new ArrayList<String>(Arrays.asList(packet.dataString));
+	public void disconnect() {
+		settings.save();
+		playerlist.remove(this);
+	}
+	
+	public void handleModPacketResponse(PacketModList pkt) {
+		if(pkt.Mods.length > 0) {
+			List<String> Mods = new ArrayList<String>(Arrays.asList(pkt.Mods));
 			
 			for(ModInfo info:MultiModWorld.getInstance().getModList()) {
-				for(String ModName:packet.dataString) {
+				for(String ModName:pkt.Mods) {
 					if(info.equals(ModName)) {
 						KnownMods.add(info);
 						Mods.remove(ModName);
@@ -66,7 +73,7 @@ public class MMWPlayer {
 				KnownMods.add(new ClientMod(Modinfo));
 			}
 		}
-		System.out.println("Analysed Packet230");
+		System.out.println("Analysed PacketModList");
 	}
 	
 	// Player Create
@@ -104,6 +111,7 @@ public class MMWPlayer {
 		}
 		return new MMWPlayer(player);
 	}
+	
 	public static MMWPlayer getMMWPlayer(EntityPlayer eplayer) {
 		for (final Object ommwplayer : playerlist.toArray()) {
 			final MMWPlayer mmwplayer = (MMWPlayer) ommwplayer;
@@ -111,5 +119,14 @@ public class MMWPlayer {
 			return mmwplayer;
 		}
 		return new MMWPlayer(eplayer);
+	}
+	
+	public static MMWPlayer getDefinedMMWPlayer(String Name) {
+		for (final Object ommwplayer : playerlist.toArray()) {
+			final MMWPlayer mmwplayer = (MMWPlayer) ommwplayer;
+			mmwplayer.player.getName().equalsIgnoreCase(Name);
+			return mmwplayer;
+		}
+		return null;
 	}
 }
