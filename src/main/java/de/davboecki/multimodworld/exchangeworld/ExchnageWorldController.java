@@ -9,11 +9,11 @@ import de.davboecki.multimodworld.exchangeworld.listener.PlayerMoveListener;
 
 public class ExchnageWorldController {
 
-	private final MultiModWorld plugin;
+	private MultiModWorld plugin;
 	public static final ExchangeWorldGenerator generator = new ExchangeWorldGenerator();
 
-	public ExchnageWorldController(MultiModWorld instance) {
-		plugin = instance;
+	public ExchnageWorldController() {
+		plugin = MultiModWorld.getInstance();
 	}
 
 	public void onLoad() {
@@ -24,8 +24,8 @@ public class ExchnageWorldController {
 
 	public void onEnable() {
 		final PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvents(new ExchangeWorldSpawnListener(plugin), plugin);
-		pm.registerEvents(new PlayerMoveListener(plugin), plugin);
+		pm.registerEvents(new ExchangeWorldSpawnListener(), plugin);
+		pm.registerEvents(new PlayerMoveListener(), plugin);
 	}
 
 	public boolean isChestWorld(World world) {

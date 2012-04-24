@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.server.EntityPlayer;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.davboecki.multimodworld.exchangeworld.ExchangeWorldPlayer;
@@ -22,7 +23,40 @@ public class MMWPlayer {
 	private final MMWPlayerSettings settings;
 	private ArrayList<ModInfoBase> KnownMods = new ArrayList<ModInfoBase>();
 	private ArrayList<ModInfoBase> KnownModsOtherVersion = new ArrayList<ModInfoBase>();
+	private long teleportcooldown;
+	
+	public void teleport(Location to) {
+		to.setPitch(player.getLocation().getPitch());
+		to.setYaw(player.getLocation().getYaw());
+		player.teleport(to);
+	}
+	
+	public long getTeleportcooldown() {
+		return teleportcooldown;
+	}
 
+	public void clearTeleportcooldown() {
+		teleportcooldown = -1;
+	}
+
+	public void setWaitTeleportcooldown() {
+		teleportcooldown = -2;
+	}
+
+	public boolean waitTeleportcooldown() {
+		return teleportcooldown == -2;
+	}
+	
+	public boolean needTeleportcooldown() {
+		if(teleportcooldown == -1) return false;
+		if(teleportcooldown == -2) return true;
+		return teleportcooldown > (System.currentTimeMillis() - 500);
+	}
+
+	public void setTeleportcooldownNow() {
+		teleportcooldown = System.currentTimeMillis();
+	}
+	
 	public Player getPlayer() {
 		return player;
 	}

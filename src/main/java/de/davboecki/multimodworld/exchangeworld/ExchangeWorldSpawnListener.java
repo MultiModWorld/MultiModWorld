@@ -10,8 +10,8 @@ public class ExchangeWorldSpawnListener implements Listener {
 
 	private final MultiModWorld plugin;
 
-	ExchangeWorldSpawnListener(MultiModWorld instance) {
-		plugin = instance;
+	ExchangeWorldSpawnListener() {
+		plugin = MultiModWorld.getInstance();
 	}
 
 	@EventHandler

@@ -34,17 +34,21 @@ public class PlayerModInfo implements ICommandHandler {
 			return true;
 		}
 		if(args.length > 0 && MMWPlayer.getDefinedMMWPlayer(args[0]) == null) {
-			// TODO Error: First Argument not a Player
+			sender.sendMessage(ColorHandler.RED.toString(sender)+LanguageHandler.Error+ColorHandler.WHITE.toString(sender)+": "+LanguageHandler.NotAplayer);
 			return true;
 		}
 		MMWPlayer mplayer = MMWPlayer.getDefinedMMWPlayer(args[0]);
 		if(checkCommand("info",args,1)) {
-			sender.sendMessage(mplayer.getPlayer().getLocation().toString());
-			// TODO: Enter Info Output
+			MorePageDisplay display = new MorePageDisplay(new String[]{"< "+LanguageHandler.Player_Info+" [%/$] >"},sender.getName());
+			display.append(LanguageHandler.Player_Info_Position.toString());
+			display.append(LanguageHandler.Player_Info_World + " "+ mplayer.getPlayer().getWorld().getName());
+			display.append("X: "+ Math.floor(mplayer.getPlayer().getLocation().getX()));
+			display.append("Y: "+ Math.floor(mplayer.getPlayer().getLocation().getY()));
+			display.append("Z: "+ Math.floor(mplayer.getPlayer().getLocation().getZ()));
+			// TODO: Add more usefull information
+			display.display(sender);
 			return true;
 		} else if(checkCommand("modlist",args,1)) {
-			// TODO: List Output
-			// TODO Header of output
 			MorePageDisplay display = new MorePageDisplay(new String[]{"< "+LanguageHandler.Mod_List+" [%/$] >"},sender.getName());
 			for(ModInfoBase info:mplayer.getKnownMods()) {
 				if(info instanceof ModInfo) {

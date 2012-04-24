@@ -16,7 +16,7 @@ import de.davboecki.multimodworld.commands.ConfirmListener;
 
 public class MultiModWorld extends JavaPlugin {
 
-	private final ExchnageWorldController roomcontroler = new ExchnageWorldController(this);
+	private ExchnageWorldController roomcontroler;
 	private static MultiModWorld instance;
 	private ModList ModList = new ModList();
 	private WorldEditPlugin worldEdit;
@@ -28,11 +28,12 @@ public class MultiModWorld extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
-		roomcontroler.onLoad();
 		if (instance != null) {
 			getLogger().warning("Created MultiModWorld another time.");
 		}
 		instance = this;
+		roomcontroler = new ExchnageWorldController();
+		roomcontroler.onLoad();
 	}
 
 	@Override

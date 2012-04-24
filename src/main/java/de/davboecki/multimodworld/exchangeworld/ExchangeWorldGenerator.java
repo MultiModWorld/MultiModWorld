@@ -13,6 +13,14 @@ public class ExchangeWorldGenerator extends ChunkGenerator {
 		result[(x * 16 + z) * 128 + y] = value;
 	}
 
+	public static Location getPortalNormal(World world) {
+		return new Location(world, 2.5, 65, 10.5);
+	}
+
+	public static Location getOtherPortal(World world) {
+		return new Location(world, -1.5, 65, 10.5);
+	}
+	
 	@Override
 	public byte[] generate(World world, Random random, int cx, int cz) {
 		final byte[] result = new byte[32768];
@@ -134,6 +142,6 @@ public class ExchangeWorldGenerator extends ChunkGenerator {
 
 	@Override
 	public Location getFixedSpawnLocation(World world, Random random) {
-		return new Location(world, 8, 65, 10, 0, 90);
+		return new Location(world, 8, 65, 10, 0, 0);
 	}
 }
