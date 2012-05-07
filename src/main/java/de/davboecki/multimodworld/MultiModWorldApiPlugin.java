@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import de.davboecki.multimodworld.api.ModChecker;
 import de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin;
+import de.davboecki.multimodworld.utils.MMWPlayer;
 import forge.packets.PacketModList;
 
 public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {

@@ -3,9 +3,9 @@ package de.davboecki.multimodworld.settings;
 import java.io.File;
 import java.util.HashMap;
 
-import de.davboecki.multimodworld.MMWPlayer;
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.constant.FileSystem;
+import de.davboecki.multimodworld.utils.MMWPlayer;
 
 public class MMWPlayerSettings extends Settings {
 
@@ -27,7 +27,7 @@ public class MMWPlayerSettings extends Settings {
 
 	@Override
 	protected HashMap<String, Object> saveparse() {
-		final String pos = mmwplayer.getChestRoomPlayer().getWorldPos().toString();
+		final String pos = mmwplayer.getChestRoomPlayer().getShouldBePos().toString();
 		System.out.print(pos);
 		return null;
 	}

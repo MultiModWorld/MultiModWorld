@@ -1,4 +1,4 @@
-package de.davboecki.multimodworld;
+package de.davboecki.multimodworld.utils;
 
 import org.bukkit.World;
 

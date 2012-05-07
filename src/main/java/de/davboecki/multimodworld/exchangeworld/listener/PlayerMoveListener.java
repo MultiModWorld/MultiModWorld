@@ -5,11 +5,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import de.davboecki.multimodworld.MMWPlayer;
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.exchangeworld.ExchangeWorldGenerator;
 import de.davboecki.multimodworld.exchangeworld.ExchangeWorldPlayer;
 import de.davboecki.multimodworld.exchangeworld.ExchangeWorldPlayer.WorldPos;
+import de.davboecki.multimodworld.utils.MMWPlayer;
 
 public class PlayerMoveListener implements Listener {
 
@@ -46,7 +46,7 @@ public class PlayerMoveListener implements Listener {
 		// TODO Now Teleport to Room
 		// TODO Remove this is debug code
 		mPlayer.teleport(ExchangeWorldGenerator.getOtherPortal(event.getPlayer().getWorld()));
-		mPlayer.getChestRoomPlayer().setWorldPos(WorldPos.Mod);
+		mPlayer.getChestRoomPlayer().setShouldBePos(WorldPos.Mod);
 		mPlayer.setWaitTeleportcooldown();
 	}
 
@@ -54,34 +54,34 @@ public class PlayerMoveListener implements Listener {
 		// TODO Now Teleport to Room
 		// TODO Remove this is debug code
 		mPlayer.teleport(ExchangeWorldGenerator.getPortalNormal(event.getPlayer().getWorld()));
-		mPlayer.getChestRoomPlayer().setWorldPos(WorldPos.Normal);
+		mPlayer.getChestRoomPlayer().setShouldBePos(WorldPos.Normal);
 		mPlayer.setWaitTeleportcooldown();
 	}
 
 	private void ExchangeWorldMoveValid(PlayerMoveEvent event) {
 		// TODO Add messages to TeleportEvents
 		final MMWPlayer mPlayer = MMWPlayer.getMMWPlayer(event.getPlayer());
-		if (mPlayer.getChestRoomPlayer().getWorldPos() != null
-				&& !mPlayer.getChestRoomPlayer().getWorldPos().equals(mPlayer.getChestRoomPlayer().getPlayerPos())) {
-			if (mPlayer.getChestRoomPlayer().getPlayerPos().equals(ExchangeWorldPlayer.WorldPos.LavaWall)) {
-				if (mPlayer.getChestRoomPlayer().getWorldPos().equals(ExchangeWorldPlayer.WorldPos.Normal)) {
+		if (mPlayer.getChestRoomPlayer().getShouldBePos() != null
+				&& !mPlayer.getChestRoomPlayer().getShouldBePos().equals(mPlayer.getChestRoomPlayer().getRealPos())) {
+			if (mPlayer.getChestRoomPlayer().getRealPos().equals(ExchangeWorldPlayer.WorldPos.LavaWall)) {
+				if (mPlayer.getChestRoomPlayer().getShouldBePos().equals(ExchangeWorldPlayer.WorldPos.Normal)) {
 					final Location loc = mPlayer.getPlayer().getLocation();
 					loc.setX(loc.getX() + 3);
 					mPlayer.getPlayer().teleport(loc);
-				} else if (mPlayer.getChestRoomPlayer().getWorldPos().equals(ExchangeWorldPlayer.WorldPos.Mod)) {
+				} else if (mPlayer.getChestRoomPlayer().getShouldBePos().equals(ExchangeWorldPlayer.WorldPos.Mod)) {
 					final Location loc = mPlayer.getPlayer().getLocation();
 					loc.setX(loc.getX() - 3);
 					mPlayer.getPlayer().teleport(loc);
 				}
-			} else if (mPlayer.getChestRoomPlayer().getPlayerPos().equals(ExchangeWorldPlayer.WorldPos.Underground)) {
+			} else if (mPlayer.getChestRoomPlayer().getRealPos().equals(ExchangeWorldPlayer.WorldPos.Underground)) {
 				final Location loc = mPlayer.getPlayer().getWorld().getSpawnLocation();
 				mPlayer.getPlayer().teleport(loc);
 			} else {
-				if (mPlayer.getChestRoomPlayer().getWorldPos().equals(ExchangeWorldPlayer.WorldPos.Normal)) {
+				if (mPlayer.getChestRoomPlayer().getShouldBePos().equals(ExchangeWorldPlayer.WorldPos.Normal)) {
 					final Location loc = ExchangeWorldGenerator.getPortalNormal(mPlayer.getPlayer().getWorld());
 					mPlayer.teleport(loc);
 					mPlayer.setWaitTeleportcooldown();
-				} else if (mPlayer.getChestRoomPlayer().getWorldPos().equals(ExchangeWorldPlayer.WorldPos.Mod)) {
+				} else if (mPlayer.getChestRoomPlayer().getShouldBePos().equals(ExchangeWorldPlayer.WorldPos.Mod)) {
 					final Location loc = ExchangeWorldGenerator.getOtherPortal(mPlayer.getPlayer().getWorld());
 					mPlayer.teleport(loc);
 					mPlayer.setWaitTeleportcooldown();

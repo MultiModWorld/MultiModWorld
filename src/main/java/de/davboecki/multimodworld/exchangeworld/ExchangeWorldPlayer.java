@@ -1,13 +1,22 @@
 package de.davboecki.multimodworld.exchangeworld;
 
+import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import de.davboecki.multimodworld.MMWPlayer;
+import de.davboecki.multimodworld.utils.MMWExchangeWorld;
+import de.davboecki.multimodworld.utils.MMWPlayer;
+import de.davboecki.multimodworld.utils.MMWRoomSettings;
 
 public class ExchangeWorldPlayer {
 
+	public enum WorldPos {
+		Normal, Mod, Room, LavaWall, Underground, Unknown
+	}
+
 	MMWPlayer mmwplayer;
+	HashMap<String/* Worldname */,MMWRoomSettings> rSettings;
 
 	public ExchangeWorldPlayer(MMWPlayer mmwplayer) {
 		this.mmwplayer = mmwplayer;
@@ -15,24 +24,24 @@ public class ExchangeWorldPlayer {
 
 	private WorldPos wPos = WorldPos.Normal;
 
-	public WorldPos getWorldPos() {
+	public WorldPos getShouldBePos() {
 		return wPos;
 	}
 
-	public void setWorldPos(WorldPos wPos) {
+	public void setShouldBePos(WorldPos wPos) {
 		this.wPos = wPos;
 	}
 
-	public enum WorldPos {
-		Normal, Mod, Room, LavaWall, Underground, Unknown
+	public MMWRoomSettings getRoomSettingsForWorld(MMWExchangeWorld world) {
+		return rSettings.get(world.getWorld().getName());
 	}
-
+	
 	public boolean isPlayerinRoom() {
 		// TODO
 		return false;
 	}
 
-	public WorldPos getPlayerPos() {
+	public WorldPos getRealPos() {
 		final Player player = mmwplayer.getPlayer();
 		final Location loc = player.getLocation();
 		if (loc.getY() > 63) {

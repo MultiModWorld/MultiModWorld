@@ -1,4 +1,4 @@
-package de.davboecki.multimodworld;
+package de.davboecki.multimodworld.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +9,7 @@ import net.minecraft.server.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.exchangeworld.ExchangeWorldPlayer;
 import de.davboecki.multimodworld.mod.ClientMod;
 import de.davboecki.multimodworld.mod.ModInfo;

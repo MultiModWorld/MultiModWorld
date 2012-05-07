@@ -14,7 +14,7 @@ public enum LanguageHandler {
 	Player_Info("Player Info"),
 	Player_Info_Position("Position:"),
 	Player_Info_World("World:"),
-	//Dummy(""),
+	WorldEdit_Loaded("WorldEdit plugin found."),
 	//Dummy(""),
 	//Dummy(""),
 	//Dummy(""),

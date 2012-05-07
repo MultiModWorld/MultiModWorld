@@ -2,13 +2,13 @@ package de.davboecki.multimodworld.commands.commandhandler;
 
 import org.bukkit.command.CommandSender;
 
-import de.davboecki.multimodworld.MMWPlayer;
 import de.davboecki.multimodworld.commands.ICommandHandler;
 import de.davboecki.multimodworld.commands.MorePageDisplay;
 import de.davboecki.multimodworld.handler.ColorHandler;
 import de.davboecki.multimodworld.handler.LanguageHandler;
 import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.mod.ModInfoBase;
+import de.davboecki.multimodworld.utils.MMWPlayer;
 
 public class PlayerModInfo implements ICommandHandler {
 

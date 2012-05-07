@@ -6,8 +6,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
-import de.davboecki.multimodworld.MMWPlayer;
-import de.davboecki.multimodworld.MMWWorld;
+import de.davboecki.multimodworld.utils.MMWPlayer;
+import de.davboecki.multimodworld.utils.MMWWorld;
 
 public class MMWSettingsListener implements Listener {
 	
