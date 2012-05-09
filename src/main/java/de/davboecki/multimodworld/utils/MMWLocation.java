@@ -2,10 +2,16 @@ package de.davboecki.multimodworld.utils;
 
 import java.util.HashMap;
 
+import org.bukkit.Location;
+
 import de.davboecki.multimodworld.settings.Hashmapable;
 
 public class MMWLocation implements Hashmapable {
-
+	
+	private double x;
+	private double y;
+	private double z;
+	
 	public double getX() {
 		return x;
 	}
@@ -53,10 +59,18 @@ public class MMWLocation implements Hashmapable {
 	public void setZ(int z) {
 		this.z = z;
 	}
-
-	private double x;
-	private double y;
-	private double z;
+	
+	public MMWLocation moved(MMWLocation movefor) {
+		MMWLocation loc = new MMWLocation(this);
+		loc.x += movefor.x;
+		loc.y += movefor.y;
+		loc.z += movefor.z;
+		return loc;
+	}
+	
+	public Location getBukkitLocation(MMWWorld world) {
+		return new Location(world.getWorld(),x,y,z);
+	}
 	
 	public MMWLocation(int i, int j, int k) {
 		x = i;
@@ -72,6 +86,12 @@ public class MMWLocation implements Hashmapable {
 
 	public MMWLocation(HashMap<String, Object> map) {
 		fromHashMap(map);
+	}
+
+	public MMWLocation(MMWLocation mmwLocation) {
+		x = mmwLocation.x;
+		y = mmwLocation.y;
+		z = mmwLocation.z;
 	}
 
 	public HashMap<String, Object> toHashMap() {

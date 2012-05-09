@@ -34,8 +34,14 @@ public class ModList extends ArrayList<ModInfo> {
 				if(Moddata.getPackets() != null && Moddata.getPackets().length > 0) {
 					info.addPackets(Moddata.getPackets());
 				}
+				if(Moddata.getAddedRecipies() != null && Moddata.getAddedRecipies().length > 0) {
+					info.addAddedRecipies(Moddata.getAddedRecipies());
+				}
+				if(Moddata.getRemovedRecipies() != null && Moddata.getRemovedRecipies().length > 0) {
+					info.addRemovedRecipies(Moddata.getRemovedRecipies());
+				}
 			} else {
-				throw new Exception("Mod: "+Moddata.getMod().toString()+" added Blocks/Entities/Packets but he was not loaded.");
+				throw new Exception("Mod: "+Moddata.getMod().toString()+" added Blocks/Entities/Packets/Recipies but he was not loaded.");
 			}
 		}
 	}

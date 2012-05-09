@@ -3,7 +3,6 @@ package de.davboecki.multimodworld.exchangeworld.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import de.davboecki.multimodworld.commands.ICommandHandler;

@@ -7,6 +7,7 @@ import java.util.List;
 import cpw.mods.fml.common.ModContainer;
 import forge.NetworkMod;
 
+import net.minecraft.server.CraftingRecipe;
 import net.minecraft.server.Entity;
 import net.minecraft.server.Packet;
 
@@ -33,6 +34,8 @@ public class ModInfo extends ModInfoBase {
 	@SuppressWarnings("unchecked")
 	protected Class<Entity>[] Entities = new Class[0];
 	protected int[] ids = new int[0];
+	protected CraftingRecipe[] addedRecipies;
+	protected CraftingRecipe[] removedRecipies;
 
 	public ModContainer getModContainer() {
 		return bMod;
@@ -54,6 +57,14 @@ public class ModInfo extends ModInfoBase {
 		return ids;
 	}
 	
+	public CraftingRecipe[] getAddedRecipies() {
+		return addedRecipies;
+	}
+
+	public CraftingRecipe[] getRemovedRecipies() {
+		return removedRecipies;
+	}
+
 	@SuppressWarnings("unchecked")
 	public void addPackets(Class<Packet>[] packets) {
 		this.Packets = merge(this.Packets,packets);
@@ -63,9 +74,17 @@ public class ModInfo extends ModInfoBase {
 	public void addEntities(Class<Entity>[] entities) {
 		this.Entities = merge(this.Entities,entities);
 	}
-	
+
 	public void addIds(int[] ids) {
 		this.ids = merge(this.ids,ids);
+	}
+
+	public void addAddedRecipies(CraftingRecipe[] addedRecipies) {
+		this.addedRecipies = merge(this.addedRecipies,addedRecipies);
+	}
+
+	public void addRemovedRecipies(CraftingRecipe[] removedRecipies) {
+		this.removedRecipies = merge(this.removedRecipies,removedRecipies);
 	}
 	
 	public boolean addedPackets() {
@@ -121,6 +140,22 @@ public class ModInfo extends ModInfoBase {
 		for(Object Object:list) {
 			if(Object instanceof Integer) {
 				content[count++] = (Class)Object;
+			}
+		}
+		return content;
+	}
+	
+	public static CraftingRecipe[] merge(CraftingRecipe[]... arrays) {
+		List list = new ArrayList();
+		
+		for( CraftingRecipe[] array : arrays )
+		list.addAll( Arrays.asList( array ) );
+		
+		CraftingRecipe[] content = new CraftingRecipe[list.size()];
+		int count = 0;
+		for(Object Object:list) {
+			if(Object instanceof Integer) {
+				content[count++] = (CraftingRecipe)Object;
 			}
 		}
 		return content;

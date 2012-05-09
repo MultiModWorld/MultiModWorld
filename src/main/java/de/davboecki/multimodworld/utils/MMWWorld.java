@@ -1,7 +1,10 @@
 package de.davboecki.multimodworld.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+
+import net.minecraft.server.CraftingRecipe;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -9,19 +12,21 @@ import org.bukkit.World;
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.settings.MMWWorldSettings;
+import de.davboecki.multimodworld.settings.cache.MMWWorldCache;
 
 public class MMWWorld {
 	
 	private World world;
 	MMWWorldSettings settings;
-	private final HashMap<ModInfo,Boolean> ModList = new HashMap<ModInfo,Boolean>();
+	private final HashMap<ModInfo,Boolean> WorldModList = new HashMap<ModInfo,Boolean>();
+	private MMWWorldCache cache = new MMWWorldCache();
 	
 	public World getWorld() {
 		return world;
 	}
 
 	public HashMap<ModInfo,Boolean> getModList(){
-		return ModList;
+		return WorldModList;
 	}
 
 	//Create MMWWorld
@@ -48,6 +53,41 @@ public class MMWWorld {
 		} else {
 			return new MMWWorld(world);
 		}
+	}
+	
+	public ArrayList<CraftingRecipe> getRecipies(ArrayList<CraftingRecipe> normal) {
+		if(cache.craftinglistForWorld == null || !cache.vanillacraftinglistForWorld.equals(normal)) {
+			ArrayList<CraftingRecipe> list = new ArrayList<CraftingRecipe>(normal);
+			for(ModInfo info : this.WorldModList.keySet()) {
+				if(this.WorldModList.get(info)) {
+					if(info.getAddedRecipies() != null) {
+						list.addAll(Arrays.asList(info.getAddedRecipies()));
+					}
+					if(info.getRemovedRecipies() != null) {
+						list.removeAll(Arrays.asList(info.getRemovedRecipies()));
+					}
+				}
+			}
+			cache.vanillacraftinglistForWorld = normal;
+			return cache.craftinglistForWorld = list;
+		} else {
+			return cache.craftinglistForWorld;
+		}
+	}
+	
+	public boolean isIdAllowed(int id) {
+		for(ModInfo info : this.WorldModList.keySet()) {
+			if(this.WorldModList.get(info)) {
+				if(Arrays.asList(info.getIds()).contains(id)){
+					return true;
+				}
+			} else {
+				if(Arrays.asList(info.getIds()).contains(id)){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public static MMWWorld getMMWWorld(String worldname) {

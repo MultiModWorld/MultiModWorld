@@ -35,6 +35,14 @@ public class ExchangeWorldPlayer {
 	public MMWRoomSettings getRoomSettingsForWorld(MMWExchangeWorld world) {
 		return rSettings.get(world.getWorld().getName());
 	}
+
+	public void insertRoomSettings(MMWExchangeWorld world, MMWRoomSettings settings) {
+		if(!rSettings.containsKey(world.getWorld().getName())) {
+			rSettings.put(world.getWorld().getName(), settings);
+		} else {
+			throw new UnsupportedOperationException("This should not happen. Please report this to the MMW author.");
+		}
+	}
 	
 	public boolean isPlayerinRoom() {
 		// TODO

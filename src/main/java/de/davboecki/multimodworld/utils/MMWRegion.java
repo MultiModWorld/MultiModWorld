@@ -1,6 +1,5 @@
 package de.davboecki.multimodworld.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -28,6 +27,10 @@ public class MMWRegion implements Hashmapable {
 		this.world = world;
 	}
 	
+	public MMWRegion(HashMap<String, Object> hashMap) {
+		this.fromHashMap(hashMap);
+	}
+
 	public boolean LocationinRegion(MMWLocation location) {
 		return between(location.getX(),upperCorner.getX(),lowerCorner.getX()) && between(location.getY(),upperCorner.getY(),lowerCorner.getY()) && between(location.getZ(),upperCorner.getZ(),lowerCorner.getZ());
 	}
@@ -131,6 +134,7 @@ public class MMWRegion implements Hashmapable {
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void fromHashMap(HashMap<String, Object> map) {
 		upperCorner = new MMWLocation((HashMap<String, Object>)map.get("upperCorner"));
 		lowerCorner = new MMWLocation((HashMap<String, Object>)map.get("lowerCorner"));
