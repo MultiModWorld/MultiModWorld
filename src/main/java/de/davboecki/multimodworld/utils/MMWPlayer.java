@@ -82,6 +82,10 @@ public class MMWPlayer {
 		return KnownMods.toArray(new ModInfo[0]);
 	}
 	
+	public boolean knowsmod(ModInfo info) {
+		return KnownMods.contains(info);
+	}
+	
 	public void disconnect() {
 		settings.save();
 		playerlist.remove(this);

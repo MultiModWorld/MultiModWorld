@@ -8,14 +8,17 @@ import net.minecraft.server.Packet;
 
 import org.bukkit.entity.Player;
 
+import cpw.mods.fml.common.ModContainer;
+
 import de.davboecki.multimodworld.api.ModChecker;
 import de.davboecki.multimodworld.api.plugin.IModWorldHandlePlugin;
+import de.davboecki.multimodworld.mmwevents.ChunkHandler;
 import de.davboecki.multimodworld.mmwevents.EntityHandler;
 import de.davboecki.multimodworld.mmwevents.IDHandler;
 import de.davboecki.multimodworld.mmwevents.PacketHandler;
 import de.davboecki.multimodworld.mmwevents.RecipiesHandler;
-import de.davboecki.multimodworld.mmwevents.WorldSettingsHandler;
 import de.davboecki.multimodworld.utils.MMWPlayer;
+import de.davboecki.multimodworld.utils.MMWWorld;
 import forge.packets.PacketModList;
 
 public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {
@@ -24,29 +27,25 @@ public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {
 	EntityHandler entityhandler = new EntityHandler();
 	IDHandler idhandler = new IDHandler();
 	RecipiesHandler recipieshandler = new RecipiesHandler();
-	WorldSettingsHandler worldsettingshandler = new WorldSettingsHandler();
+	ChunkHandler chunkhandler = new ChunkHandler();
 	
 	MultiModWorldApiPlugin() {
 		ModChecker.registerIModWorldHandlePlugin(this);
 	}
 	
-	public boolean PacketSend(Packet packet, Player player) { // TODO
+	public boolean PacketSend(Packet packet, Player player) {
 		return packethandler.handlePacketByServer(packet, player);
 	}
 
-	public Entity ReplaceEntity(String WorldName, Entity entity) { // TODO
+	public Entity ReplaceEntity(String WorldName, Entity entity) {
 		return entityhandler.replayeEntity(WorldName,entity);
-	}
-
-	public boolean hasWorldSetting(String WorldName, String setting) { // TODO
-		return worldsettingshandler.hasWorldSetting(WorldName, setting);
 	}
 
 	public boolean isCraftingAllowed(String WorldName, int id) {
 		return isIdAllowed(WorldName, id);
 	}
 
-	public boolean isEntityAllowed(String WorldName, Entity entity) { // TODO
+	public boolean isEntityAllowed(String WorldName, Entity entity) {
 		return entityhandler.isEntityAllowed(WorldName, entity);
 	}
 
@@ -62,6 +61,10 @@ public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {
 	@SuppressWarnings("rawtypes")
 	public List replaceRecipies(List recipies, String Worldname) {
 		return recipieshandler.replaceRecipies(recipies, Worldname);
+	}
+
+	public boolean populateChunk(String name, int chunkX, int chunkZ, ModContainer mod) {
+		return chunkhandler.populateChunk(name, chunkX, chunkZ, mod);
 	}
 
 }

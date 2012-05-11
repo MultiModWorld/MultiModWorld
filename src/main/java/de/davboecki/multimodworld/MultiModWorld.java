@@ -25,6 +25,7 @@ public class MultiModWorld extends JavaPlugin {
 	private WorldEditPlugin worldEdit;
 	private CommandHandler commandHandler = new CommandHandler();
 	private Logger log = this.getLogger();
+	private boolean debug = true;
 
 	public ExchnageWorldController getRoomcontroler() {
 		return roomcontroler;
@@ -74,6 +75,18 @@ public class MultiModWorld extends JavaPlugin {
 		return ExchnageWorldController.generator;
 	}
 
+	public ModList getModList() {
+		return ModList;
+	}
+
+	public WorldEditPlugin getWorldEdit() {
+		return worldEdit;
+	}
+	
+	public static boolean isdebug() {
+		return getInstance().debug;
+	}
+	
 	public static MultiModWorld getInstance() {
 		/*
 		@SuppressWarnings("restriction")
@@ -87,13 +100,5 @@ public class MultiModWorld extends JavaPlugin {
 			return null;
 		}
 		*/
-	}
-
-	public ModList getModList() {
-		return ModList;
-	}
-
-	public WorldEditPlugin getWorldEdit() {
-		return worldEdit;
 	}
 }

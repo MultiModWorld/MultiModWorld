@@ -13,6 +13,7 @@ import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.settings.MMWWorldSettings;
 import de.davboecki.multimodworld.settings.cache.MMWWorldCache;
+import de.davboecki.multimodworld.settings.cache.WorldPopulationCache;
 
 public class MMWWorld {
 	
@@ -20,6 +21,7 @@ public class MMWWorld {
 	MMWWorldSettings settings;
 	private final HashMap<ModInfo,Boolean> WorldModList = new HashMap<ModInfo,Boolean>();
 	private MMWWorldCache cache = new MMWWorldCache();
+	private WorldPopulationCache populationchache = new WorldPopulationCache(this);
 	
 	public World getWorld() {
 		return world;
@@ -28,33 +30,14 @@ public class MMWWorld {
 	public HashMap<ModInfo,Boolean> getModList(){
 		return WorldModList;
 	}
-
-	//Create MMWWorld
-	private static final ArrayList<MMWPlayer> worldlist = new ArrayList<MMWPlayer>();
-
-	protected MMWWorld(World world) {
-		this.world = world;
-		settings = new MMWWorldSettings(this);
-		if (settings.isNew()) {
-			settings.save();
-		} else {
-			settings.load();
-		}
-	}
-
-	public static MMWWorld getMMWWorld(World world) {
-		for (final Object ommwworld : worldlist.toArray()) {
-			final MMWWorld mmwworld = (MMWWorld) ommwworld;
-			mmwworld.world.getName().equals(world.getName());
-			return mmwworld;
-		}
-		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(world)){
-			return new MMWExchangeWorld(world);
-		} else {
-			return new MMWWorld(world);
-		}
-	}
 	
+	public boolean isModEnabled(ModInfo info) {
+		if(!WorldModList.containsKey(info)) {
+			return false;
+		}
+		return WorldModList.get(info);
+	}
+
 	public ArrayList<CraftingRecipe> getRecipies(ArrayList<CraftingRecipe> normal) {
 		if(cache.craftinglistForWorld == null || !cache.vanillacraftinglistForWorld.equals(normal)) {
 			ArrayList<CraftingRecipe> list = new ArrayList<CraftingRecipe>(normal);
@@ -88,6 +71,49 @@ public class MMWWorld {
 			}
 		}
 		return true;
+	}
+	
+	public boolean isModByNameEnabled(String... names) {
+		for(ModInfo info : this.WorldModList.keySet()) {
+			if(this.WorldModList.get(info)) {
+				for(String name:names) {
+					if(info.getName().toLowerCase().contains(name.toLowerCase())) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public WorldPopulationCache getPopulationchache() {
+		return populationchache;
+	}
+
+	//Create MMWWorld
+	private static final ArrayList<MMWPlayer> worldlist = new ArrayList<MMWPlayer>();
+
+	protected MMWWorld(World world) {
+		this.world = world;
+		settings = new MMWWorldSettings(this);
+		if (settings.isNew()) {
+			settings.save();
+		} else {
+			settings.load();
+		}
+	}
+
+	public static MMWWorld getMMWWorld(World world) {
+		for (final Object ommwworld : worldlist.toArray()) {
+			final MMWWorld mmwworld = (MMWWorld) ommwworld;
+			mmwworld.world.getName().equals(world.getName());
+			return mmwworld;
+		}
+		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(world)){
+			return new MMWExchangeWorld(world);
+		} else {
+			return new MMWWorld(world);
+		}
 	}
 	
 	public static MMWWorld getMMWWorld(String worldname) {
