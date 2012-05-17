@@ -42,7 +42,23 @@ public abstract class Settings {
 	 * Returns a error message as String.
 	 */
 	abstract protected String error(ErrorType et);
-
+	
+	private String getError(ErrorType et) {
+		String msg = error(et);
+		if(msg == "") {
+			if(et == ErrorType.IO) {
+				msg = "IOException";
+			} else if(et == ErrorType.FileNotFound) {
+				msg = "FileNotFoundException";
+			} else if(et == ErrorType.Cast) {
+				msg = "ClasCastException";
+			} else {
+				msg = "Error";
+			}
+		}
+		return msg;
+	}
+	
 	protected File getFile() {
 		return file;
 	}
@@ -54,13 +70,13 @@ public abstract class Settings {
 			final HashMap<String, Object> map = (HashMap<String, Object>) omap;
 			loadparse(new SettingsParser(map));
 		} catch (final FileNotFoundException e) {
-			log.warning(error(ErrorType.FileNotFound));
+			log.warning(getError(ErrorType.FileNotFound));
 			save();
 		} catch (final ClassCastException e) {
-			log.severe(error(ErrorType.Cast));
+			log.severe(getError(ErrorType.Cast));
 			BrokenSettingsFile();
 		} catch (final Exception e) {
-			log.severe(error(ErrorType.Unknown));
+			log.severe(getError(ErrorType.Unknown));
 			BrokenSettingsFile();
 		}
 	}
@@ -71,9 +87,10 @@ public abstract class Settings {
 			return;
 		}
 		try {
+			new File(file.getParent()).mkdirs();
 			yaml.dump(filterHashMap(map), new OutputStreamWriter(new FileOutputStream(file)));
 		} catch (final IOException e) {
-			log.severe(error(ErrorType.IO));
+			log.severe(getError(ErrorType.IO));
 		}
 	}
 
@@ -95,7 +112,7 @@ public abstract class Settings {
 		}
 		return newmap;
 	}
-
+	
 	private void BrokenSettingsFile() {
 		save();
 	}

@@ -93,6 +93,11 @@ public class MMWLocation implements Hashmapable {
 		y = mmwLocation.y;
 		z = mmwLocation.z;
 	}
+	public MMWLocation(Location location) {
+		x = location.getX();
+		y = location.getY();
+		z = location.getZ();
+	}
 
 	public HashMap<String, Object> toHashMap() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -108,4 +113,13 @@ public class MMWLocation implements Hashmapable {
 		z = (Double) map.get("z");
 	}
 
+	//Base Functions
+	@Override
+	public boolean equals(Object object) {
+		if(object == null) return false;
+		if(!(object instanceof MMWLocation)) return false;
+		MMWLocation mmwlocation = (MMWLocation)object;
+		return mmwlocation.x == this.x && mmwlocation.y == this.y && mmwlocation.z == this.z;
+	}
 }
+

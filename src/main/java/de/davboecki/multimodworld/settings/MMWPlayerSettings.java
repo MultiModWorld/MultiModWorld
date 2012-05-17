@@ -20,16 +20,22 @@ public class MMWPlayerSettings extends Settings {
 		return !getFile().exists();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void loadparse(SettingsParser parser) {
-		// TODO Auto-generated method stub
+		HashMap<String,HashMap<String,Object>> tmp = (HashMap<String, HashMap<String,Object>>) parser.get("RoomSettings");
+		HashMap<String,MMWRoomSettings> settings = new HashMap<String,MMWRoomSettings>();
+		for(String key:tmp.keySet()) {
+			settings.put(key, new MMWRoomSettings(tmp.get(key)));
+		}
+		mmwplayer.getChestRoomPlayer().rSettings = settings;
 	}
 
 	@Override
 	protected HashMap<String, Object> saveparse() {
-		final String pos = mmwplayer.getChestRoomPlayer().getShouldBePos().toString();
-		System.out.print(pos);
-		return null;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("RoomSettings", mmwplayer.getChestRoomPlayer().rSettings);
+		return map;
 	}
 
 	@Override

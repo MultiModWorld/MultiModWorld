@@ -7,10 +7,13 @@ import java.util.List;
 import net.minecraft.server.EntityPlayer;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.exchangeworld.ExchangeWorldPlayer;
+import de.davboecki.multimodworld.handler.Permission;
 import de.davboecki.multimodworld.mod.ClientMod;
 import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.mod.ModInfoBase;
@@ -26,9 +29,60 @@ public class MMWPlayer {
 	private ArrayList<ModInfoBase> KnownModsOtherVersion = new ArrayList<ModInfoBase>();
 	private long teleportcooldown;
 	
+	
+	public enum exchangeworldposition { normal_Area, other_Area, normal_RoomPortal, other_RoomPortal};
+	
 	public void teleport(Location to) {
 		to.setPitch(player.getLocation().getPitch());
 		to.setYaw(player.getLocation().getYaw());
+		player.teleport(to);
+	}
+	
+	public void teleport(MMWLocation to) {
+		Location loc = to.getBukkitLocation(MMWWorld.getMMWWorld(player.getWorld()));
+		loc.setPitch(player.getLocation().getPitch());
+		loc.setYaw(player.getLocation().getYaw());
+		player.teleport(loc);
+	}
+	
+	public void teleportWithGateViewCheck(MMWLocation to) {
+		teleportWithGateViewCheck(to.getBukkitLocation(MMWWorld.getMMWWorld(player.getWorld())));
+	}
+	
+	private int getGateOutputYaw(Location to, boolean shifted) {
+		Location BlockEye = to.clone();
+		BlockEye.add(new Vector(1,1.62D,0));
+		Block b1 = BlockEye.getBlock();
+		BlockEye.add(new Vector(-1,0,1));
+		Block b2 = BlockEye.getBlock();
+		BlockEye.add(new Vector(-1,0,-1));
+		Block b3 = BlockEye.getBlock();
+		BlockEye.add(new Vector(1,0,-1));
+		Block b4 = BlockEye.getBlock();
+		if(b1.isEmpty() && !b2.isEmpty() && !b3.isEmpty() && !b4.isEmpty()) {
+			return shifted ? 90: 270;
+		} else if(!b1.isEmpty() && b2.isEmpty() && !b3.isEmpty() && !b4.isEmpty()) {
+			return shifted ? 180: 0;
+		} else if(!b1.isEmpty() && !b2.isEmpty() && b3.isEmpty() && !b4.isEmpty()) {
+			return shifted ? 270: 90;
+		} else if(!b1.isEmpty() && !b2.isEmpty() && !b3.isEmpty() && b4.isEmpty()) {
+			return shifted ? 0: 180;
+		} else {
+			return -1;
+		}
+	}
+	
+	public void teleportWithGateViewCheck(Location to) {
+		to.setPitch(player.getLocation().getPitch());
+		float Yaw = player.getLocation().getYaw();
+		int YawGatefrom = getGateOutputYaw(player.getLocation(),true);
+		int YawGateto = getGateOutputYaw(to,false);
+		if(YawGateto == -1 || YawGatefrom == -1) {
+			to.setYaw(Yaw);
+			player.sendMessage("No Portal");
+		} else {
+			to.setYaw(Yaw-YawGatefrom+YawGateto);
+		}
 		player.teleport(to);
 	}
 	
@@ -56,6 +110,10 @@ public class MMWPlayer {
 
 	public void setTeleportcooldownNow() {
 		teleportcooldown = System.currentTimeMillis();
+	}
+	
+	public MMWLocation getLocation() {
+		return new MMWLocation(this.getPlayer().getLocation().getX(), this.getPlayer().getLocation().getY(), this.getPlayer().getLocation().getZ());
 	}
 	
 	public Player getPlayer() {
@@ -115,6 +173,10 @@ public class MMWPlayer {
 		System.out.println("Analysed PacketModList");
 	}
 	
+	public boolean hasPerrmision(Permission perm) {
+		return perm.hasPermission(player);
+	}
+	
 	// Player Create
 	private static final ArrayList<MMWPlayer> playerlist = new ArrayList<MMWPlayer>();
 
@@ -167,5 +229,18 @@ public class MMWPlayer {
 			return mmwplayer;
 		}
 		return null;
+	}
+	
+	static MMWPlayer[] getAllMMWPlayers() {
+		return playerlist.toArray(new MMWPlayer[0]);
+	}
+	
+	//Base Functions
+	@Override
+	public boolean equals(Object object) {
+		if(object == null) return false;
+		if(!(object instanceof MMWPlayer)) return false;
+		MMWPlayer mmwplayer = (MMWPlayer)object;
+		return mmwplayer.player.getName() == this.player.getName();
 	}
 }

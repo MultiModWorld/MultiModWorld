@@ -24,7 +24,7 @@ public class MultiModWorld extends JavaPlugin {
 	private ModList ModList = new ModList();
 	private WorldEditPlugin worldEdit;
 	private CommandHandler commandHandler = new CommandHandler();
-	private Logger log = this.getLogger();
+	private Logger log;
 	private boolean debug = true;
 
 	public ExchnageWorldController getRoomcontroler() {
@@ -39,6 +39,7 @@ public class MultiModWorld extends JavaPlugin {
 		instance = this;
 		roomcontroler = new ExchnageWorldController();
 		roomcontroler.onLoad();
+		log = this.getLogger();
 	}
 
 	@Override

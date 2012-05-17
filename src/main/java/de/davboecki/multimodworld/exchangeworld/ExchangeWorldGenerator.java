@@ -144,4 +144,9 @@ public class ExchangeWorldGenerator extends ChunkGenerator {
 	public Location getFixedSpawnLocation(World world, Random random) {
 		return new Location(world, 8, 65, 10, 0, 0);
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		return object instanceof ExchangeWorldGenerator;
+	}
 }

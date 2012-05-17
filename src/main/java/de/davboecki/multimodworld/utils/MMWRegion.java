@@ -31,15 +31,15 @@ public class MMWRegion implements Hashmapable {
 		this.fromHashMap(hashMap);
 	}
 
-	public boolean LocationinRegion(MMWLocation location) {
+	public boolean isLocationInRegion(MMWLocation location) {
 		return between(location.getX(),upperCorner.getX(),lowerCorner.getX()) && between(location.getY(),upperCorner.getY(),lowerCorner.getY()) && between(location.getZ(),upperCorner.getZ(),lowerCorner.getZ());
 	}
 	
 	public boolean[] getContainedBlocksBooleanArray() {
 		boolean[] contains = new boolean[Minecraftconstants.blockidcount];
-		for(int x = getLowerIntX(); x < getHigherIntX(); x++) {
-			for(int y = getLowerIntY(); y < getHigherIntY(); y++) {
-				for(int z = getLowerIntZ(); z < getHigherIntZ(); z++) {
+		for(int x = getLowerIntX(); x <= getHigherIntX(); x++) {
+			for(int y = getLowerIntY(); y <= getHigherIntY(); y++) {
+				for(int z = getLowerIntZ(); z <= getHigherIntZ(); z++) {
 					Block block = world.getWorld().getBlockAt(x, y, z);
 					if(block != null && block.getTypeId() != 0) {
 						contains[block.getTypeId()] = true;
@@ -70,9 +70,9 @@ public class MMWRegion implements Hashmapable {
 	
 	private boolean between(double value, double var1, double var2) {
 		if(var1 > var2) {
-			return value > var2 && value < var1;
+			return value >= var2 && value <= var1;
 		} else if(var1 < var2) {
-			return value < var2 && value > var1;
+			return value <= var2 && value >= var1;
 		} else { //var1 == var2
 			return value == var1;
 		}
@@ -139,5 +139,14 @@ public class MMWRegion implements Hashmapable {
 		upperCorner = new MMWLocation((HashMap<String, Object>)map.get("upperCorner"));
 		lowerCorner = new MMWLocation((HashMap<String, Object>)map.get("lowerCorner"));
 		world = MMWWorld.getMMWWorld((String)map.get("world"));
+	}
+
+	//Base Functions
+	@Override
+	public boolean equals(Object object) {
+		if(object == null) return false;
+		if(!(object instanceof MMWRegion)) return false;
+		MMWRegion mmwregion = (MMWRegion)object;
+		return mmwregion.upperCorner.equals(this.upperCorner) && mmwregion.lowerCorner.equals(this.lowerCorner) && mmwregion.world.equals(this.world);
 	}
 }

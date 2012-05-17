@@ -21,7 +21,7 @@ public class MMWWorld {
 	MMWWorldSettings settings;
 	private final HashMap<ModInfo,Boolean> WorldModList = new HashMap<ModInfo,Boolean>();
 	private MMWWorldCache cache = new MMWWorldCache();
-	private WorldPopulationCache populationchache = new WorldPopulationCache(this);
+	private WorldPopulationCache populationchache;
 	
 	public World getWorld() {
 		return world;
@@ -91,7 +91,7 @@ public class MMWWorld {
 	}
 
 	//Create MMWWorld
-	private static final ArrayList<MMWPlayer> worldlist = new ArrayList<MMWPlayer>();
+	private static final ArrayList<MMWWorld> worldlist = new ArrayList<MMWWorld>();
 
 	protected MMWWorld(World world) {
 		this.world = world;
@@ -101,13 +101,16 @@ public class MMWWorld {
 		} else {
 			settings.load();
 		}
+		populationchache = new WorldPopulationCache(this);
+		worldlist.add(this);
 	}
 
 	public static MMWWorld getMMWWorld(World world) {
 		for (final Object ommwworld : worldlist.toArray()) {
 			final MMWWorld mmwworld = (MMWWorld) ommwworld;
-			mmwworld.world.getName().equals(world.getName());
-			return mmwworld;
+			if(mmwworld.world.getName().equals(world.getName())) {
+				return mmwworld;
+			}
 		}
 		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(world)){
 			return new MMWExchangeWorld(world);
@@ -117,6 +120,25 @@ public class MMWWorld {
 	}
 	
 	public static MMWWorld getMMWWorld(String worldname) {
-		return getMMWWorld(Bukkit.getWorld(worldname));
+		for (final Object ommwworld : worldlist.toArray()) {
+			final MMWWorld mmwworld = (MMWWorld) ommwworld;
+			if(mmwworld.world.getName().equals(worldname)) {
+				return mmwworld;
+			}
+		}
+		World world;
+		if((world = Bukkit.getWorld(worldname)) == null) {
+			return null;
+		}
+		return getMMWWorld(world);
+	}
+	
+	//Base Functions
+	@Override
+	public boolean equals(Object object) {
+		if(object == null) return false;
+		if(!(object instanceof MMWWorld)) return false;
+		MMWWorld mmwworld = (MMWWorld)object;
+		return mmwworld.world.getName().equals(this.world.getName());
 	}
 }

@@ -145,6 +145,7 @@ public class ModInfo extends ModInfoBase {
 		return content;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static CraftingRecipe[] merge(CraftingRecipe[]... arrays) {
 		List list = new ArrayList();
 		

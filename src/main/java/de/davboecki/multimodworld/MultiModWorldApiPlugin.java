@@ -18,7 +18,6 @@ import de.davboecki.multimodworld.mmwevents.IDHandler;
 import de.davboecki.multimodworld.mmwevents.PacketHandler;
 import de.davboecki.multimodworld.mmwevents.RecipiesHandler;
 import de.davboecki.multimodworld.utils.MMWPlayer;
-import de.davboecki.multimodworld.utils.MMWWorld;
 import forge.packets.PacketModList;
 
 public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {
