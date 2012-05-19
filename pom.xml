@@ -16,8 +16,8 @@
 
   <repositories>
     <repository>
-      <id>multimodworld-server-repo</id>
-      <url>http://files.davboecki.de/Minecraft/Bukkit/MultiModWorld/lib</url>
+      <id>thezorro266-extern</id>
+      <url>http://repo.theZorro266.com/extern/</url>
     </repository>
   </repositories>
 
@@ -30,7 +30,7 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>de.davboecki</groupId>
+      <groupId>com.sk89q</groupId>
       <artifactId>worldedit</artifactId>
       <version>5.4-SNAPSHOT</version>
     </dependency>
