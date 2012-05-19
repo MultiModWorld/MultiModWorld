@@ -15,4 +15,10 @@ public class ModInfoBase {
 	public String toString() {
 		return this.getName();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof ModInfoBase)) return false;
+		return ((ModInfoBase)o).Name.equalsIgnoreCase(Name);
+	}
 }

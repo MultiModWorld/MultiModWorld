@@ -1,12 +1,18 @@
 package de.davboecki.multimodworld.utils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.settings.MMWExchangeWorldSettings;
 import de.davboecki.multimodworld.settings.MMWRoomSettings;
 
 public class MMWExchangeWorld extends MMWWorld {
+	
+	public HashMap<ModInfo,Boolean> requiredMods = new HashMap<ModInfo,Boolean>();
 	
 	protected MMWExchangeWorld(World world) {
 		super(world);
@@ -20,5 +26,15 @@ public class MMWExchangeWorld extends MMWWorld {
 			}
 		}
 		return null;
+	}
+	
+	public ArrayList<ModInfo> getRequiredMods() {
+		ArrayList<ModInfo> mods = new ArrayList<ModInfo>();
+		for(ModInfo info:requiredMods.keySet()) {
+			if(requiredMods.get(info)) {
+				mods.add(info);
+			}
+		}
+		return mods;
 	}
 }

@@ -1,17 +1,26 @@
 package de.davboecki.multimodworld.exchangeworld;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import de.davboecki.multimodworld.MultiModWorld;
+import de.davboecki.multimodworld.craftbukkit.ItemInformation;
 import de.davboecki.multimodworld.exchangeworld.rooms.Room;
 import de.davboecki.multimodworld.exchangeworld.rooms.RoomDefault;
 import de.davboecki.multimodworld.exchangeworld.rooms.SearchThread;
+import de.davboecki.multimodworld.handler.ColorHandler;
+import de.davboecki.multimodworld.handler.LanguageHandler;
+import de.davboecki.multimodworld.mod.ModInfo;
 import de.davboecki.multimodworld.settings.MMWRoomSettings;
 import de.davboecki.multimodworld.utils.MMWExchangeWorld;
 import de.davboecki.multimodworld.utils.MMWPlayer;
 import de.davboecki.multimodworld.utils.MMWPlayer.exchangeworldposition;
+import de.davboecki.multimodworld.utils.MMWWorld;
 
 public class ExchangeWorldPlayer {
 
@@ -58,8 +67,13 @@ public class ExchangeWorldPlayer {
 			}
 		} else {
 			if(pos == exchangeworldposition.normal_Area) {
-				mmwplayer.teleportWithGateViewCheck(ExchangeWorldGenerator.getPortalNormal(world.getWorld()));
-				this.setShouldBePos(WorldPos.Normal);
+				if(!hasPlayerModItemsForWorld(world)) {
+					mmwplayer.teleportWithGateViewCheck(ExchangeWorldGenerator.getPortalNormal(world.getWorld()));
+					this.setShouldBePos(WorldPos.Normal);
+				} else {
+					mmwplayer.getPlayer().sendMessage(ColorHandler.RED.toString() + LanguageHandler.Not_Allowed_Items.toString());
+					messageUnallowedItemsForWorld(world);
+				}
 			} else {
 				mmwplayer.teleportWithGateViewCheck(ExchangeWorldGenerator.getOtherPortal(world.getWorld()));
 				this.setShouldBePos(WorldPos.Mod);
@@ -68,6 +82,48 @@ public class ExchangeWorldPlayer {
 		mmwplayer.setWaitTeleportcooldown();
 	}
 	
+	private void messageUnallowedItemsForWorld(MMWWorld mmwworld) {
+		for(ItemStack item:mmwplayer.getTotalInventory()) {
+			if(item == null) continue;
+			ModInfo info = MultiModWorld.getInstance().getModList().getById(item.getTypeId());
+			if(info != null) {
+				if(mmwworld.getModList().containsKey(info)) {
+					if(!mmwworld.getModList().get(info)) {
+						mmwplayer.getPlayer().sendMessage(ColorHandler.DARK_BLUE.toString() + new ItemInformation(item.getTypeId()).getName());
+					}
+				}
+			}
+		}
+	}
+	
+	public ArrayList<ModInfo> getModsForPlayerInventory() {
+		ArrayList<ModInfo> mods = new ArrayList<ModInfo>();
+		for(ItemStack item:mmwplayer.getTotalInventory()) {
+			if(item == null) continue;
+			ModInfo info = MultiModWorld.getInstance().getModList().getById(item.getTypeId());
+			if(info != null) {
+				mods.add(info);
+			}
+		}
+		return mods;
+	}
+
+	public boolean hasPlayerModItems() {
+		return getModsForPlayerInventory() != null;
+	}
+
+	public boolean hasPlayerModItemsForWorld(MMWWorld mmwworld) {
+		ArrayList<ModInfo> mods;
+		if((mods = getModsForPlayerInventory()) == null) return false;
+		for(ModInfo info:mods) {
+			if(mmwworld.getModList().containsKey(info)) {
+				if(!mmwworld.getModList().get(info)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	private Room getRoomType() {
 		//TODO Implement Funtion

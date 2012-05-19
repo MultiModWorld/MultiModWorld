@@ -116,7 +116,8 @@ public class ModInfo extends ModInfoBase {
 		List list = new ArrayList();
 		
 		for( int[] array : arrays )
-		list.addAll( Arrays.asList( array ) );
+			for(int arraypart: array)
+				list.add(arraypart);
 		
 		int[] content = new int[list.size()];
 		int count = 0;
@@ -133,7 +134,8 @@ public class ModInfo extends ModInfoBase {
 		List list = new ArrayList();
 		
 		for( Class[] array : arrays )
-		list.addAll( Arrays.asList( array ) );
+			for(Class arraypart: array)
+				list.add(arraypart);
 		
 		Class[] content = new Class[list.size()];
 		int count = 0;
@@ -150,7 +152,8 @@ public class ModInfo extends ModInfoBase {
 		List list = new ArrayList();
 		
 		for( CraftingRecipe[] array : arrays )
-		list.addAll( Arrays.asList( array ) );
+			for(CraftingRecipe arraypart: array)
+				list.add(arraypart);
 		
 		CraftingRecipe[] content = new CraftingRecipe[list.size()];
 		int count = 0;

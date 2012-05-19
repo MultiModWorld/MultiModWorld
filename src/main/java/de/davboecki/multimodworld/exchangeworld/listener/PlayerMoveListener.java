@@ -34,21 +34,22 @@ public class PlayerMoveListener implements Listener {
 		final MMWPlayer mPlayer = MMWPlayer.getMMWPlayer(event.getPlayer());
 		if(ExchangeWorldGenerator.getPortalNormal(event.getPlayer().getWorld()).distance(event.getPlayer().getLocation()) < 0.4) {
 			mPlayer.getChestRoomPlayer().teleport((MMWExchangeWorld) MMWWorld.getMMWWorld(event.getPlayer().getWorld()), MMWPlayer.exchangeworldposition.normal_RoomPortal);
+			return;
 		} else if(ExchangeWorldGenerator.getOtherPortal(event.getPlayer().getWorld()).distance(event.getPlayer().getLocation()) < 0.4) {
 			mPlayer.getChestRoomPlayer().teleport((MMWExchangeWorld) MMWWorld.getMMWWorld(event.getPlayer().getWorld()), MMWPlayer.exchangeworldposition.other_RoomPortal);
+			return;
 		} else if(mPlayer.getChestRoomPlayer().getRealPos() == ExchangeWorldPlayer.WorldPos.Room) {
 			if(mPlayer.getChestRoomPlayer().getRoomSettingsForWorld((MMWExchangeWorld) MMWWorld.getMMWWorld(event.getPlayer().getWorld())) != null) {
 				if(mPlayer.getChestRoomPlayer().getRoomSettingsForWorld((MMWExchangeWorld) MMWWorld.getMMWWorld(event.getPlayer().getWorld())).getNormalPortal().getBukkitLocation(MMWWorld.getMMWWorld(event.getPlayer().getWorld())).distance(event.getTo()) < 0.3) {
 					mPlayer.getChestRoomPlayer().teleport((MMWExchangeWorld) MMWWorld.getMMWWorld(event.getPlayer().getWorld()), MMWPlayer.exchangeworldposition.normal_Area);
+					return;
 				} else if(mPlayer.getChestRoomPlayer().getRoomSettingsForWorld((MMWExchangeWorld) MMWWorld.getMMWWorld(event.getPlayer().getWorld())).getOtherPortal().getBukkitLocation(MMWWorld.getMMWWorld(event.getPlayer().getWorld())).distance(event.getTo()) < 0.3) {
 					mPlayer.getChestRoomPlayer().teleport((MMWExchangeWorld) MMWWorld.getMMWWorld(event.getPlayer().getWorld()), MMWPlayer.exchangeworldposition.other_Area);
-				} else if(mPlayer.waitTeleportcooldown()) {
-					mPlayer.setTeleportcooldownNow();
+					return;
 				}
-			} else if(mPlayer.waitTeleportcooldown()) {
-				mPlayer.setTeleportcooldownNow();
 			}
-		} else if(mPlayer.waitTeleportcooldown()) {
+		}
+		if(mPlayer.waitTeleportcooldown()) {
 			mPlayer.setTeleportcooldownNow();
 		}
 	}

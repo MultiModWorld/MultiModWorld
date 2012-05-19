@@ -28,6 +28,7 @@ public class PlayerAccessListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void interact(PlayerInteractEvent event) {
+		if(event.getClickedBlock() == null) return;
 		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(event.getClickedBlock().getWorld())) {
 			MMWPlayer mmwplayer = MMWPlayer.getMMWPlayer(event.getPlayer());
 			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getTypeId() != 0) {
@@ -49,6 +50,7 @@ public class PlayerAccessListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void blockbreak(BlockBreakEvent event) {
+		if(event.getBlock() == null) return;
 		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(event.getBlock().getWorld())) {
 			MMWPlayer mmwplayer = MMWPlayer.getMMWPlayer(event.getPlayer());
 			Location loc = event.getBlock().getLocation();
@@ -70,6 +72,7 @@ public class PlayerAccessListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void blockplace(BlockPlaceEvent event) {
+		if(event.getBlock() == null) return;
 		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(event.getBlock().getWorld())) {
 			MMWPlayer mmwplayer = MMWPlayer.getMMWPlayer(event.getPlayer());
 			Location loc = event.getBlock().getLocation();
@@ -91,6 +94,7 @@ public class PlayerAccessListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void pistonretract(BlockPistonRetractEvent  event) {
+		if(event.getBlock() == null) return;
 		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(event.getBlock().getWorld())) {
 			MMWExchangeWorld mmwexworld = (MMWExchangeWorld)MMWWorld.getMMWWorld(event.getBlock().getWorld());
 			MMWRoomSettings settings = mmwexworld.getRoomSettingsForLocation(event.getBlock().getLocation());
@@ -109,6 +113,7 @@ public class PlayerAccessListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void pistonextend(BlockPistonExtendEvent  event) {
+		if(event.getBlock() == null) return;
 		if(MultiModWorld.getInstance().getRoomcontroler().isChestWorld(event.getBlock().getWorld())) {
 			MMWExchangeWorld mmwexworld = (MMWExchangeWorld)MMWWorld.getMMWWorld(event.getBlock().getWorld());
 			MMWRoomSettings settings = mmwexworld.getRoomSettingsForLocation(event.getBlock().getLocation());

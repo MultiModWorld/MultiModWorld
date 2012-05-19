@@ -59,7 +59,7 @@ public class MMWWorld {
 	}
 	
 	public boolean isIdAllowed(int id) {
-		for(ModInfo info : this.WorldModList.keySet()) {
+		/*for(ModInfo info : this.WorldModList.keySet()) {
 			if(this.WorldModList.get(info)) {
 				if(Arrays.asList(info.getIds()).contains(id)){
 					return true;
@@ -69,8 +69,11 @@ public class MMWWorld {
 					return false;
 				}
 			}
-		}
-		return true;
+		}*/
+		if(id == 97) return false;
+		ModInfo info = MultiModWorld.getInstance().getModList().getById(id);
+		if(info == null) return true;
+		return WorldModList.containsKey(info) && WorldModList.get(info);
 	}
 	
 	public boolean isModByNameEnabled(String... names) {
@@ -90,6 +93,14 @@ public class MMWWorld {
 		return populationchache;
 	}
 
+	private void addUnListedMods() {
+		for(ModInfo info: MultiModWorld.getInstance().getModList()) {
+			if(!WorldModList.containsKey(info)) {
+				WorldModList.put(info,false);
+			}
+		}
+	}
+	
 	//Create MMWWorld
 	private static final ArrayList<MMWWorld> worldlist = new ArrayList<MMWWorld>();
 
@@ -103,6 +114,7 @@ public class MMWWorld {
 		}
 		populationchache = new WorldPopulationCache(this);
 		worldlist.add(this);
+		addUnListedMods();
 	}
 
 	public static MMWWorld getMMWWorld(World world) {

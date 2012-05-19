@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginManager;
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.exchangeworld.listener.PlayerAccessListener;
 import de.davboecki.multimodworld.exchangeworld.listener.PlayerMoveListener;
+import de.davboecki.multimodworld.exchangeworld.listener.WeatherListener;
 
 public class ExchnageWorldController {
 	
@@ -28,6 +29,8 @@ public class ExchnageWorldController {
 		pm.registerEvents(new ExchangeWorldSpawnListener(), plugin);
 		pm.registerEvents(new PlayerMoveListener(), plugin);
 		pm.registerEvents(new PlayerAccessListener(), plugin);
+		pm.registerEvents(new WeatherListener(), plugin);
+		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new TimeControler(), 1, 120);
 	}
 
 	public boolean isChestWorld(World world) {

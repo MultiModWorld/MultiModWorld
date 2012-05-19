@@ -54,7 +54,7 @@ public class MultiModWorldApiPlugin implements IModWorldHandlePlugin {
 	
 	public boolean handleModPacketResponse(EntityPlayer eplayer, PacketModList pkt) {
 		MMWPlayer.getMMWPlayer(eplayer).handleModPacketResponse(pkt);
-		return false;
+		return true;
 	}
 
 	@SuppressWarnings("rawtypes")

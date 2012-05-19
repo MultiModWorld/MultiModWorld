@@ -13,6 +13,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import de.davboecki.multimodworld.exchangeworld.ExchnageWorldController;
 import de.davboecki.multimodworld.handler.LanguageHandler;
 import de.davboecki.multimodworld.listener.MMWSettingsListener;
+import de.davboecki.multimodworld.listener.PlayerFakeLockListener;
 import de.davboecki.multimodworld.mod.ModList;
 import de.davboecki.multimodworld.commands.CommandHandler;
 import de.davboecki.multimodworld.commands.ConfirmListener;
@@ -26,6 +27,7 @@ public class MultiModWorld extends JavaPlugin {
 	private CommandHandler commandHandler = new CommandHandler();
 	private Logger log;
 	private boolean debug = true;
+	private PlayerFakeLockListener fakeLockListener;
 
 	public ExchnageWorldController getRoomcontroler() {
 		return roomcontroler;
@@ -60,7 +62,7 @@ public class MultiModWorld extends JavaPlugin {
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new ConfirmListener(),this);
 		pm.registerEvents(new MMWSettingsListener(), this);
-		
+		pm.registerEvents(fakeLockListener = new PlayerFakeLockListener(), this);
 		
 		Plugin wePlugin = getServer().getPluginManager().getPlugin("WorldEdit");
         if (wePlugin != null) {
@@ -84,6 +86,10 @@ public class MultiModWorld extends JavaPlugin {
 		return worldEdit;
 	}
 	
+	public PlayerFakeLockListener getFakeLockListener() {
+		return fakeLockListener;
+	}
+
 	public static boolean isdebug() {
 		return getInstance().debug;
 	}
