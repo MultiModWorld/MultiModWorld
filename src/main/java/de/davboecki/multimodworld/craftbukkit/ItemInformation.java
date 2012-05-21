@@ -11,6 +11,13 @@ public class ItemInformation {
 	
 	public String getName() {
 		try {
+			String name = net.minecraft.server.Item.byId[id].l();
+			if(name == null || name.equals("null.name")) {
+				name = net.minecraft.server.Item.byId[id].getName();
+			}
+			if(name == null || name.equals("null.name") || name.equals("null")) {
+				name = Material.getMaterial(id).name();
+			}
 			return net.minecraft.server.Item.byId[id].l();
 		} catch(Exception e) {
 			return Material.getMaterial(id).name();
