@@ -3,8 +3,8 @@ package de.davboecki.multimodworld.handler;
 import org.bukkit.entity.Player;
 
 public enum Permission {
-	Player("player.*"),
-	Admin("admin.*",Player),
+	Admin("admin.*"),
+	Player("player.*",Admin),
 	ChangeLobby("admin.changelobby",Admin),
 	//Dummy(""),
 	//Dummy(""),
@@ -16,12 +16,12 @@ public enum Permission {
 	AccessUnownedRoom("admin.accessunowndedroom",Admin);
 	
 	String permissionnode = "";
-	Permission supernode = null;
+	Permission[] supernode = null;
 	Permission(String node) {
 		permissionnode = "multimodworld."+node;
 	}
 	
-	Permission(String node, Permission superperm) {
+	Permission(String node, Permission... superperm) {
 		permissionnode = "multimodworld."+node;
 		supernode = superperm;
 	}
@@ -30,11 +30,21 @@ public enum Permission {
 		return permissionnode;
 	}
 	
-	public Permission getSuperNode() {
+	public Permission[] getSuperNodes() {
 		return supernode;
 	}
 	
+	private boolean hasSuperPermission(Player player) {
+		if(supernode == null) return false;
+		for(Permission node:supernode) {
+			if(node.hasPermission(player)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean hasPermission(Player player) {
-		return player.hasPermission(permissionnode) || (supernode != null && supernode.hasPermission(player)) || player.isOp();
+		return player.hasPermission(permissionnode) || hasSuperPermission(player) || player.isOp();
 	}
 }

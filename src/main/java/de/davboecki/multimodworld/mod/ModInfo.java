@@ -1,7 +1,6 @@
 package de.davboecki.multimodworld.mod;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.common.ModContainer;
