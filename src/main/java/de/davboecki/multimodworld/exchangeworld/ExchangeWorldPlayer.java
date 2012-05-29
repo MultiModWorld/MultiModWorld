@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import de.davboecki.multimodworld.MultiModWorld;
 import de.davboecki.multimodworld.craftbukkit.ItemInformation;
 import de.davboecki.multimodworld.exchangeworld.rooms.Room;
-import de.davboecki.multimodworld.exchangeworld.rooms.RoomDefault;
 import de.davboecki.multimodworld.exchangeworld.rooms.SearchThread;
 import de.davboecki.multimodworld.handler.ColorHandler;
 import de.davboecki.multimodworld.handler.LanguageHandler;
@@ -55,7 +54,7 @@ public class ExchangeWorldPlayer {
 		if(pos == exchangeworldposition.normal_RoomPortal || pos == exchangeworldposition.other_RoomPortal) {
 			MMWRoomSettings room = this.getRoomSettingsForWorld(world);
 			if(room == null) {
-				new SearchThread(this.getRoomType(),world,mmwplayer);
+				new SearchThread(this.getRoomType(world),world,mmwplayer);
 				return;
 			}
 			if(pos == exchangeworldposition.normal_RoomPortal) {
@@ -125,9 +124,8 @@ public class ExchangeWorldPlayer {
 		return false;
 	}
 	
-	private Room getRoomType() {
-		//TODO Implement Funtion
-		return new RoomDefault();
+	private Room getRoomType(MMWExchangeWorld exworld) {
+		return MultiModWorld.getInstance().getRoomcontroler().manager.getRoom(this.mmwplayer.getPlayer(), exworld.getWorld());
 	}
 
 	public void insertRoomSettings(MMWExchangeWorld world, MMWRoomSettings settings) {

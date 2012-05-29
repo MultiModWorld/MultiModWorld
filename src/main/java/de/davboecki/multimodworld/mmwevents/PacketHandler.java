@@ -28,6 +28,7 @@ public class PacketHandler {
 	
 	public PacketHandler(){}
 	
+	@SuppressWarnings("unused")
 	public boolean handlePacketByServer(Packet packet, Player player) {
 		if(packet == null) {
 			return true;

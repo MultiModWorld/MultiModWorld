@@ -3,13 +3,16 @@ package de.davboecki.multimodworld.settings.cache;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -29,7 +32,7 @@ public class WorldPopulationCache extends Thread {
 	public WorldPopulationCache(MMWWorld mmwworld) {
 		super("MMWCacheSaveThread-"+mmwworld.getWorld().getName());
 		worldname = mmwworld.getWorld().getName();
-		settingsFilePath = mmwworld.getWorld().getWorldFolder().getAbsolutePath() + "\\populatechunk.multimodworld.yml";
+		settingsFilePath = mmwworld.getWorld().getWorldFolder().getAbsolutePath() + "\\populatechunk.multimodworld.dat";
 		this.start();
 	}
 	
@@ -37,8 +40,6 @@ public class WorldPopulationCache extends Thread {
 		settingslist = null;
 		changed = false;
 		changetime = 0;
-		//TODO needed?
-		//System.gc();
 	}
 	
 	private String cordsToString(int x, int z) {
@@ -59,7 +60,7 @@ public class WorldPopulationCache extends Thread {
 		Yaml yaml = new Yaml();
 		try {
 			new File(new File(settingsFilePath).getParent()).mkdirs();
-			Writer writer = new FileWriter(new File(settingsFilePath));
+			Writer writer = new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(new File(settingsFilePath))));
 			writer.append("# DO NOT TOUCH\n");
 			writer.append("# This is not a file you should change. All information in this file are changed by the system itself.\n");
 			writer.append("# Any changes will break the plugin.\n");
@@ -67,6 +68,7 @@ public class WorldPopulationCache extends Thread {
 			writer.append("# This file is for the world '"+worldname+"'.\n");
 			writer.append("# DO NOT TOUCH\n");
 			yaml.dump(settingslist, writer);
+			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -77,7 +79,7 @@ public class WorldPopulationCache extends Thread {
 		if(settingslist != null) return;
 		Yaml yaml = new Yaml();
 		try {
-			settingslist = (HashMap<String,HashMap<String,Boolean>>)yaml.load(new FileInputStream(new File(settingsFilePath)));
+			settingslist = (HashMap<String,HashMap<String,Boolean>>)yaml.load(new GZIPInputStream(new FileInputStream(new File(settingsFilePath))));
 		} catch (FileNotFoundException e) {
 			settingslist = new HashMap<String,HashMap<String,Boolean>>();
 			save();

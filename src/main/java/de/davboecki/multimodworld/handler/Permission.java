@@ -21,7 +21,7 @@ public enum Permission {
 		permissionnode = "multimodworld."+node;
 	}
 	
-	Permission(String node, Permission... superperm) {
+	Permission(String node, Permission... superperm /* Permission in included in these permissions*/) {
 		permissionnode = "multimodworld."+node;
 		supernode = superperm;
 	}
