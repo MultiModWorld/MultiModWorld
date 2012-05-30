@@ -40,7 +40,15 @@ public class MMWPlayerSettings extends Settings {
 
 	@Override
 	protected String error(ErrorType et) {
-		// TODO Auto-generated method stub
-		return "";
+		final String Start = "Could not load player information file. ";
+		switch(et) {
+		case Cast:
+			return Start+"File is broken. ("+file.toString()+")";
+		case FileNotFound:
+			return null;
+		case IO:
+			return Start+"Could not access file. ("+file.toString()+")";
+		}
+		return Start+"Internal Error. ("+file.toString()+")";
 	}
 }

@@ -22,10 +22,4 @@ public class MMWExchangeWorldSettings extends MMWWorldSettings {
 		// TODO Auto-generated method stub
 		return answer;
 	}
-
-	@Override
-	protected String error(ErrorType et) {
-		// TODO Auto-generated method stub
-		return "";
-	}
 }

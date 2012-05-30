@@ -52,7 +52,8 @@ public abstract class Settings {
 	
 	private String getError(ErrorType et) {
 		String msg = error(et);
-		if(msg == "") {
+		if(msg == null && et.equals(ErrorType.FileNotFound)) return null;
+		if(msg == null || msg == "") {
 			if(et == ErrorType.IO) {
 				msg = "IOException";
 			} else if(et == ErrorType.FileNotFound) {
@@ -82,7 +83,8 @@ public abstract class Settings {
 			final HashMap<String, Object> map = (HashMap<String, Object>) omap;
 			loadparse(new SettingsParser(map));
 		} catch (final FileNotFoundException e) {
-			log.warning(getError(ErrorType.FileNotFound));
+			String msg = getError(ErrorType.FileNotFound);
+			if(msg != null) log.warning(msg);
 			save();
 		} catch (final ClassCastException e) {
 			log.severe(getError(ErrorType.Cast));

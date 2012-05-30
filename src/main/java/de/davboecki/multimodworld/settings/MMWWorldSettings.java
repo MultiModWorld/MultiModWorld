@@ -58,7 +58,15 @@ public class MMWWorldSettings extends Settings {
 
 	@Override
 	protected String error(ErrorType et) {
-		// TODO Auto-generated method stub
-		return "";
+		final String Start = "Could not load world information file. ";
+		switch(et) {
+		case Cast:
+			return Start+"File is broken. ("+file.toString()+")";
+		case FileNotFound:
+			return Start+"File not found. Normal on world creation. ("+file.toString()+")";
+		case IO:
+			return Start+"Could not access file. ("+file.toString()+")";
+		}
+		return Start+"Internal Error. ("+file.toString()+")";
 	}
 }

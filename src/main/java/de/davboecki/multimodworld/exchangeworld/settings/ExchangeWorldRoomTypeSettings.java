@@ -55,7 +55,7 @@ public class ExchangeWorldRoomTypeSettings extends Settings {
 		case FileNotFound:
 			return "Could not load ExchangeWorld-Room information. Internal Error. File not found. ("+file.toString()+")";
 		case IO:
-			return "Could not load ExchangeWorld-Room information. Could not read file. ("+file.toString()+")";
+			return "Could not load ExchangeWorld-Room information. Could not access file. ("+file.toString()+")";
 		}
 		return "Could not load ExchangeWorld-Room information. Internal Error. ("+file.toString()+")";
 	}
